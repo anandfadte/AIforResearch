@@ -1126,9 +1126,12 @@ function resetStep3UI() {
 }
 
 function chooseConfidence(choice) {
-  if (!decision || !actionChoice || confidence === choice) return;
-  confidence = choice;
+  if (!decision || !actionChoice) return;
+  if (confidence === choice) return;
+  /* Undo previous confidence pts before applying new choice */
   var prevScore = score;
+  if (confidence !== null) score -= 20;
+  confidence = choice;
   score += 20;
 
   document.getElementById('btn-high').className = 'choice-btn' + (choice==='high' ? ' selected' : '');
