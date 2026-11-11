@@ -366,7 +366,7 @@ export function ActivityPhases({ slug, phases, dataFiles, basePath, folderName, 
                   </div>
                 )}
 
-                {/* Debrief reveal section (Phase 6 only) */}
+                {/* Reveal section — rendered on the last phase only */}
                 {isLast && (phase.content.revealDistractors || phase.content.revealQuirks) && (
                   <div className="space-y-4">
                     <button
@@ -523,7 +523,7 @@ function ResearchModeBadge({ raw }: { raw: string }) {
         <span className="text-sm font-semibold text-text-primary">{label}</span>
       </div>
       {description && (
-        <p className="text-sm text-text-muted mt-1">— {description}</p>
+        <p className="text-sm text-text-muted mt-1">{description}</p>
       )}
     </div>
   );
