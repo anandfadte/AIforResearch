@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI ranked it. What would you do? — Warm-Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root {
+  --bg: #FAF9F6;
+  --surface: #FFFFFF;
+  --surface-2: #F1F1ED;
+  --ink: #172A3A;
+  --muted: #5E6E7B;
+  --line: #E2E2DC;
+  --accent: #0B6B61;
+  --accent-2: #0E8578;
+  --accent-soft: #E7F2F0;
+  --warn: #B45309;
+  --warn-bg: #FFFBEB;
+  --warn-border: #F59E0B;
+  --warn-dark: #78350F;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+.font-display { font-family: 'Fraunces', Georgia, serif; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; border-radius: 10px; }
+
+/* ── Page ── */
+.page { max-width: 1080px; margin: 0 auto; padding: 48px 32px 64px; }
+@media (max-width: 640px) { .page { padding: 32px 20px 48px; } }
+
+/* ── Header ── */
+.header { max-width: 760px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.title { font-family: 'Fraunces', Georgia, serif; font-size: clamp(38px, 6vw, 62px); font-weight: 600; line-height: 0.98; letter-spacing: -0.02em; margin: 0 0 16px; }
+.subtitle { font-size: clamp(17px, 2.5vw, 21px); line-height: 1.55; color: var(--muted); margin: 0; }
+
+/* ── Context bar ── */
+.context-bar { margin-top: 32px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 16px 24px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.context-bar strong { color: var(--ink); }
+
+/* ── Timer ── */
+.timer-row { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.timer-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.timer-display { font-family: 'Fraunces', Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1; min-width: 62px; text-align: center; }
+.timer-display.urgent { color: #B54708; }
+.timer-display.done { color: var(--muted); }
+.timer-status { font-size: 13px; color: var(--muted); }
+.timer-buttons { margin-left: auto; display: flex; gap: 8px; }
+.btn-primary { background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 999px; }
+.btn-primary:disabled { opacity: 0.45; cursor: default; }
+.btn-secondary { background: var(--surface); color: var(--ink); font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); }
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* ── Scenario card ── */
+.scenario-card { margin-top: 28px; background: var(--ink); color: #fff; border-radius: 20px; padding: 28px 32px; }
+@media (max-width: 640px) { .scenario-card { padding: 20px; } }
+.scenario-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7EC8C0; margin: 0 0 12px; }
+.scenario-text { font-size: clamp(15px, 2vw, 17px); line-height: 1.65; margin: 0; color: rgba(255,255,255,0.88); }
+.scenario-text strong { color: #fff; }
+.scenario-hint { margin: 16px 0 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 13px; color: rgba(255,255,255,0.5); }
+
+/* ── Split view ── */
+.split-view { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) { .split-view { grid-template-columns: 1fr; } }
+
+.lens-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+.lens-header { padding: 24px 28px 20px; border-bottom: 1px solid var(--line); }
+.lens-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.lens-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.lens-title { font-family: 'Fraunces', Georgia, serif; font-size: 27px; font-weight: 600; line-height: 1.2; margin: 0; }
+.basis-badge { flex-shrink: 0; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.basis-badge.teal { background: var(--accent-soft); color: var(--accent); }
+.basis-badge.grey { background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+
+/* AI list */
+.ai-list { padding: 12px 16px; }
+.ai-row { display: flex; align-items: center; gap: 16px; padding: 14px 12px; border-radius: 16px; }
+.ai-row.top { background: var(--accent-soft); }
+.rank-badge { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; }
+.rank-badge.top { background: var(--accent); color: #fff; }
+.rank-badge.other { background: var(--surface-2); color: var(--ink); }
+.ai-row-name { flex: 1; min-width: 0; }
+.ai-row-name .name { font-size: 17px; font-weight: 700; line-height: 1.2; }
+.ai-row-name .top-badge { display: block; margin-top: 3px; font-size: 12px; font-weight: 700; color: var(--accent); }
+.ai-score-block { text-align: right; }
+.ai-score-block .score-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.ai-score-block .score-num { font-family: 'Fraunces', Georgia, serif; font-size: 26px; font-weight: 600; line-height: 1; }
+.lens-footer { margin-top: auto; border-top: 1px solid var(--line); background: var(--surface-2); padding: 16px 28px; }
+.lens-footer .footer-title { font-size: 14px; font-weight: 700; color: var(--accent); margin: 0 0 4px; }
+.lens-footer .footer-desc { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 0; }
+
+/* Human lens */
+.human-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 28px; }
+.human-quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 0 0 24px; }
+.human-quote p { font-family: 'Fraunces', Georgia, serif; font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; line-height: 1.35; margin: 0; }
+.human-note { background: var(--surface-2); border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
+.human-note strong { color: var(--ink); }
+.human-lens-footer { border-top: 1px solid var(--line); padding: 16px 28px; }
+.human-lens-footer p { margin: 0; font-size: 14px; font-weight: 700; }
+
+/* Lock overlay */
+.human-lock {
+  position: absolute; inset: 0; border-radius: 20px; z-index: 3;
+  background: rgba(23, 42, 58, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  text-align: center; padding: 24px;
+}
+.lock-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.lock-icon svg { opacity: 0.9; }
+.lock-title { font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 600; color: #fff; margin: 0; }
+.lock-desc { font-size: 13px; color: rgba(255,255,255,0.65); margin: 0; line-height: 1.5; }
+
+/* ── Evidence / Clue section ── */
+.evidence-section { margin-top: 20px; }
+.evidence-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+.evidence-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.evidence-hint { font-size: 13px; color: var(--muted); margin: 0; }
+.clue-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 640px) { .clue-grid { grid-template-columns: 1fr; } }
+
+.clue-card { border-radius: 16px; border: 1.5px solid var(--line); background: var(--surface); overflow: hidden; transition: border-color 0.25s, opacity 0.25s; }
+.clue-card.unlocked { border-color: var(--accent); }
+.clue-card.disabled { opacity: 0.4; pointer-events: none; }
+
+.clue-locked-view { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+.clue-category-row { display: flex; align-items: center; gap: 10px; }
+.clue-icon-wrap { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.clue-category { font-size: 14px; font-weight: 700; color: var(--ink); }
+.clue-hint-text { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0; }
+.clue-unlock-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.clue-cost-badge { font-size: 11px; font-weight: 700; color: #92400E; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+.btn-unlock { font-size: 13px; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 7px 16px; transition: background 0.15s; }
+.btn-unlock:hover { background: var(--accent-soft); }
+
+.clue-revealed-view { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.clue-unlocked-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warn); display: flex; align-items: center; gap: 5px; }
+.clue-finding { font-size: 14px; line-height: 1.65; color: var(--ink); margin: 0; border-left: 3px solid var(--accent); padding-left: 14px; }
+
+/* ── Score tracker ── */
+.score-tracker {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.tracker-steps { display: flex; align-items: center; gap: 0; }
+.tracker-step { display: flex; align-items: center; gap: 8px; }
+.tracker-dot {
+  width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--muted); background: var(--surface-2);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.tracker-dot.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tracker-dot.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.tracker-step-name { font-size: 12px; font-weight: 700; color: var(--ink); display: block; }
+.tracker-step-pts { font-size: 11px; color: var(--muted); display: block; }
+.tracker-line { width: 32px; height: 2px; background: var(--line); margin: 0 8px; flex-shrink: 0; transition: background 0.4s; }
+.tracker-line.done { background: var(--accent); }
+
+.score-total { text-align: right; }
+.score-total-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; }
+.score-num-big { font-family: 'Fraunces', Georgia, serif; font-size: 36px; font-weight: 600; line-height: 1; color: var(--accent); display: inline-block; }
+.score-denom { font-size: 16px; color: var(--muted); font-weight: 600; }
+
+@media (max-width: 540px) {
+  .tracker-steps { flex-wrap: wrap; gap: 8px; }
+  .tracker-line { display: none; }
+}
+
+/* ── Sections ── */
+.section { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px; }
+@media (max-width: 640px) { .section { padding: 20px; } }
+.step-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.section-title { font-family: 'Fraunces', Georgia, serif; font-size: clamp(24px, 3.5vw, 32px); font-weight: 600; line-height: 1.2; margin: 0 0 20px; }
+.section-header-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.section-header-row .section-title { margin: 0; }
+.section-hint { font-size: 13px; color: var(--muted); }
+
+/* ── Choice buttons ── */
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 540px) { .choice-grid { grid-template-columns: 1fr; } }
+.choice-btn { padding: 18px 20px; border-radius: 16px; border: 2px solid var(--line); background: var(--surface); text-align: left; transition: border-color 0.15s, background 0.15s; }
+.choice-btn:hover:not(:disabled) { border-color: var(--accent); }
+.choice-btn.selected { border-color: var(--accent); background: var(--accent-soft); }
+.choice-btn.wrong-selected { border-color: var(--warn-border); background: var(--warn-bg); }
+.choice-btn-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.choice-btn-label { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.choice-btn-arrow { flex-shrink: 0; color: var(--accent); }
+.choice-btn-desc { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
+
+/* ── Action buttons ── */
+.action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+@media (max-width: 600px) { .action-grid { grid-template-columns: 1fr; } }
+.action-btn { display: flex; align-items: flex-start; gap: 12px; padding: 20px; border-radius: 16px; border: 2px solid var(--line); background: var(--surface); text-align: left; transition: border-color 0.15s, background 0.15s; }
+.action-btn:hover:not(:disabled) { border-color: var(--accent); }
+.action-btn.selected { border-color: var(--accent); background: var(--accent-soft); }
+.action-key { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--surface-2); color: var(--ink); transition: background 0.15s, color 0.15s; }
+.action-btn.selected .action-key { background: var(--accent); color: #fff; }
+.action-btn-label { font-size: 15px; font-weight: 700; line-height: 1.3; }
+
+/* ── Feedback boxes ── */
+.feedback-box { margin-top: 20px; border-radius: 16px; padding: 20px 24px; }
+.feedback-box.accent-bg { background: var(--accent); color: #fff; }
+.feedback-box.soft-bg { background: var(--surface-2); border: 1px solid var(--line); }
+.feedback-box.warn-bg { background: var(--warn-bg); border: 1px solid var(--warn-border); }
+.fb-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 8px; }
+.feedback-box.accent-bg .fb-eyebrow { color: rgba(255,255,255,0.85); }
+.feedback-box.soft-bg .fb-eyebrow { color: var(--accent); }
+.feedback-box.warn-bg .fb-eyebrow { color: var(--warn); }
+.fb-title { font-family: 'Fraunces', Georgia, serif; font-size: clamp(18px, 2.5vw, 23px); font-weight: 600; line-height: 1.35; margin: 0 0 8px; }
+.feedback-box.accent-bg .fb-title { color: #fff; }
+.feedback-box.warn-bg .fb-title { color: var(--warn-dark); }
+.fb-desc { font-size: 14px; line-height: 1.6; margin: 0; }
+.feedback-box.accent-bg .fb-desc { color: rgba(255,255,255,0.88); }
+.feedback-box.soft-bg .fb-desc { color: var(--muted); }
+.feedback-box.warn-bg .fb-desc { color: #92400E; }
+
+/* ── Cost box ── */
+.cost-box { background: var(--accent-soft); border-radius: 16px; padding: 20px 24px; font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+.cost-box strong { font-weight: 700; }
+
+/* ── Reconsider nudge ── */
+.reconsider-nudge { margin-top: 16px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 16px; padding: 18px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.reconsider-nudge p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--warn-dark); flex: 1; min-width: 200px; }
+.reconsider-nudge p strong { color: #92400E; }
+.btn-reconsider { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 999px; border: 1.5px solid var(--warn-border); background: #fff; font-size: 13px; font-weight: 700; color: #92400E; cursor: pointer; transition: background 0.15s; }
+.btn-reconsider:hover { background: #FEF3C7; }
+
+/* ── Floating point badges ── */
+.pts-badge { position: fixed; z-index: 9999; pointer-events: none; font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 700; color: var(--accent); background: #fff; border: 2px solid var(--accent); border-radius: 999px; padding: 6px 16px; white-space: nowrap; box-shadow: 0 4px 20px rgba(11,107,97,0.25); }
+.minus-badge { position: fixed; z-index: 9999; pointer-events: none; font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 700; color: #92400E; background: var(--warn-bg); border: 2px solid var(--warn-border); border-radius: 999px; padding: 5px 14px; white-space: nowrap; box-shadow: 0 4px 16px rgba(180,83,9,0.2); }
+
+/* ── Final scorecard ── */
+.scorecard { margin-top: 24px; background: var(--ink); border-radius: 24px; overflow: hidden; }
+.scorecard-top { padding: 40px 40px 32px; text-align: center; }
+@media (max-width: 640px) { .scorecard-top { padding: 28px 20px 24px; } }
+.scorecard-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7EC8C0; margin: 0 0 20px; }
+.scorecard-denom { font-size: 20px; color: rgba(255,255,255,0.4); font-weight: 600; }
+.scorecard-bar-wrap { margin: 20px auto; max-width: 400px; height: 8px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; }
+.scorecard-bar-fill { height: 100%; background: #7EC8C0; border-radius: 999px; width: 0; transition: width 1s ease; }
+.scorecard-tier { font-family: 'Fraunces', Georgia, serif; font-size: clamp(22px, 3.5vw, 28px); font-weight: 600; color: #fff; margin: 16px 0 8px; }
+.scorecard-tier-desc { font-size: 15px; color: rgba(255,255,255,0.6); margin: 0; }
+
+.scorecard-breakdown { background: rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.1); padding: 28px 40px; }
+@media (max-width: 640px) { .scorecard-breakdown { padding: 20px; } }
+.scorecard-breakdown-title { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 0 0 16px; }
+.breakdown-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.breakdown-label { font-size: 14px; color: rgba(255,255,255,0.7); flex: 1; }
+.breakdown-label strong { color: #fff; font-weight: 600; }
+.breakdown-pts { font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 600; color: #7EC8C0; min-width: 60px; text-align: right; }
+.breakdown-pts.zero { color: rgba(255,255,255,0.3); }
+.breakdown-pts.deduct { color: #F59E0B; }
+.breakdown-total { border-top: 1px solid rgba(255,255,255,0.2); border-bottom: none; margin-top: 4px; }
+.breakdown-total .breakdown-label { font-weight: 700; color: #fff; }
+.breakdown-total .breakdown-pts { font-size: 24px; }
+
+.scorecard-takeaway { margin-top: 20px; background: rgba(126,200,192,0.12); border: 1px solid rgba(126,200,192,0.25); border-radius: 16px; padding: 18px 20px; }
+.scorecard-takeaway p { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.75); margin: 0; }
+.scorecard-takeaway strong { color: #fff; }
+
+.scorecard-actions { padding: 24px 40px 32px; display: flex; justify-content: center; }
+@media (max-width: 640px) { .scorecard-actions { padding: 20px; } }
+.btn-restart { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.btn-restart:hover { background: rgba(255,255,255,0.18); }
+
+/* ── Footer strip ── */
+.debrief-strip { margin-top: 32px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 20px 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.debrief-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; list-style: none; margin: 0; padding: 0; }
+.debrief-dot { color: var(--muted); font-size: 11px; }
+.debrief-quote { font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; font-style: italic; margin: 0; }
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.h3-label { font-size: 17px; font-weight: 700; margin: 0 0 4px; }
+
+/* ── Entrance animations (pre-GSAP) ── */
+.anim-ready { opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header anim-ready" id="anim-header">
+    <p class="eyebrow">Warm-Up &middot; 3 Minutes &middot; AI for Research &amp; Analytics</p>
+    <h1 class="title font-display">The AI ranked it.<br>What would you do?</h1>
+    <p class="subtitle">The data is in front of you. So is a human check. Take three minutes and make your call.</p>
+  </header>
+
+  <!-- CONTEXT + TIMER -->
+  <div class="context-bar anim-ready" id="anim-context">
+    <strong>Context:</strong> Monthly operating cost is up for one team. You asked AI to research why.
+  </div>
+
+  <div class="timer-row anim-ready" id="anim-timer">
+    <span class="timer-label">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Timer
+    </span>
+    <span class="timer-display" id="timer-display">3:00</span>
+    <span class="timer-status" id="timer-status">Ready when you are</span>
+    <span class="timer-buttons">
+      <button class="btn-primary" id="btn-start" onclick="startTimer()">Start Timer</button>
+      <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+    </span>
+  </div>
+
+  <!-- SCENARIO CARD -->
+  <div class="scenario-card anim-ready" id="anim-scenario">
+    <p class="scenario-eyebrow">Your situation</p>
+    <p class="scenario-text">
+      You manage operations for a 200-person business unit. Last month, your team&rsquo;s software licensing costs jumped by <strong>$5,000 &mdash; a 23% spike</strong>. Your CFO has asked for an explanation by Friday. You asked AI to analyse three months of invoice and license data to find the cause.
+    </p>
+    <p class="scenario-hint">Below: what AI found &mdash; and what a human check uncovered when someone dug into the same data.</p>
+  </div>
+
+  <!-- SPLIT VIEW -->
+  <section class="split-view" aria-label="AI lens versus human lens">
+
+    <!-- AI LENS -->
+    <article class="lens-card">
+      <div class="lens-header">
+        <div class="lens-header-row">
+          <div>
+            <p class="lens-label">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              AI Lens
+            </p>
+            <h2 class="lens-title font-display">What the data says</h2>
+          </div>
+          <span class="basis-badge teal">Basis: Invoices + license count</span>
+        </div>
+      </div>
+      <div class="ai-list">
+        <div class="ai-row top anim-ready" id="ai-row-1">
+          <span class="rank-badge top">1</span>
+          <span class="ai-row-name"><span class="name">More users</span><span class="top-badge">AI Top Choice</span></span>
+          <span class="ai-score-block"><span class="score-label">AI Score</span><span class="score-num font-display">91</span></span>
+        </div>
+        <div class="ai-row anim-ready" id="ai-row-2">
+          <span class="rank-badge other">2</span>
+          <span class="ai-row-name"><span class="name">Price hike</span></span>
+          <span class="ai-score-block"><span class="score-label">AI Score</span><span class="score-num font-display">83</span></span>
+        </div>
+        <div class="ai-row anim-ready" id="ai-row-3">
+          <span class="rank-badge other">3</span>
+          <span class="ai-row-name"><span class="name">Overuse</span></span>
+          <span class="ai-score-block"><span class="score-label">AI Score</span><span class="score-num font-display">72</span></span>
+        </div>
+        <div class="ai-row anim-ready" id="ai-row-4">
+          <span class="rank-badge other">4</span>
+          <span class="ai-row-name"><span class="name">New tools</span></span>
+          <span class="ai-score-block"><span class="score-label">AI Score</span><span class="score-num font-display">65</span></span>
+        </div>
+      </div>
+      <div class="lens-footer">
+        <p class="footer-title">AI Top Choice: 1. More users</p>
+        <p class="footer-desc">The ranking follows the numbers it could see.</p>
+      </div>
+    </article>
+
+    <!-- HUMAN LENS -->
+    <article class="lens-card" id="human-lens-card">
+      <div class="lens-header">
+        <div class="lens-header-row">
+          <div>
+            <p class="lens-label">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Human Lens
+            </p>
+            <h2 class="lens-title font-display">What happened on the ground</h2>
+          </div>
+          <span class="basis-badge grey">Basis: People + process check</span>
+        </div>
+      </div>
+      <div class="human-body">
+        <blockquote class="human-quote">
+          <p class="font-display">25 licenses belong to people who left 3 months ago and are still auto-renewing. Usage per active user is flat.</p>
+        </blockquote>
+        <p class="human-note"><strong>AI counted licenses.</strong> Human checked who actually uses them.</p>
+      </div>
+      <div class="human-lens-footer"><p>The count was correct. The meaning was not.</p></div>
+
+      <!-- LOCK OVERLAY -->
+      <div class="human-lock" id="human-lock">
+        <div class="lock-icon">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <p class="lock-title">Human finding hidden</p>
+        <p class="lock-desc">See what a human check uncovered — reveal it before you decide.</p>
+        <button class="btn-unlock" style="margin-top:8px;background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.45);" onclick="unlockHumanLensManual(this)">Reveal before deciding</button>
+      </div>
+    </article>
+  </section>
+
+  <!-- EVIDENCE / CLUE SECTION -->
+  <div class="evidence-section anim-ready" id="evidence-section">
+    <div class="evidence-header">
+      <p class="evidence-eyebrow">Dig deeper before you decide</p>
+      <p class="evidence-hint">Each clue costs 5 pts &mdash; use only what you need.</p>
+    </div>
+    <div class="clue-grid">
+
+      <!-- Clue 1: HR Records -->
+      <div class="clue-card" id="clue-card-1">
+        <div class="clue-locked-view" id="clue-locked-1">
+          <div class="clue-category-row">
+            <span class="clue-icon-wrap">
+              <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <span class="clue-category">HR Records</span>
+          </div>
+          <p class="clue-hint-text">Has the team actually grown since last quarter?</p>
+          <div class="clue-unlock-row">
+            <span class="clue-cost-badge">−5 pts</span>
+            <button class="btn-unlock" id="btn-clue-1" onclick="unlockClue(1)">Unlock</button>
+          </div>
+        </div>
+        <div class="clue-revealed-view hidden" id="clue-revealed-1">
+          <span class="clue-unlocked-label">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Clue unlocked &mdash; &minus;5 pts
+          </span>
+          <p class="clue-finding">Team headcount: 198 &mdash; unchanged for 6 months. HR confirms no new joiners in Q3.</p>
+        </div>
+      </div>
+
+      <!-- Clue 2: Login Activity -->
+      <div class="clue-card" id="clue-card-2">
+        <div class="clue-locked-view" id="clue-locked-2">
+          <div class="clue-category-row">
+            <span class="clue-icon-wrap">
+              <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </span>
+            <span class="clue-category">Login Activity</span>
+          </div>
+          <p class="clue-hint-text">Are all 48 licenses actually being used?</p>
+          <div class="clue-unlock-row">
+            <span class="clue-cost-badge">−5 pts</span>
+            <button class="btn-unlock" id="btn-clue-2" onclick="unlockClue(2)">Unlock</button>
+          </div>
+        </div>
+        <div class="clue-revealed-view hidden" id="clue-revealed-2">
+          <span class="clue-unlocked-label">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Clue unlocked &mdash; &minus;5 pts
+          </span>
+          <p class="clue-finding">25 of 48 licenses show zero logins in the past 90 days.</p>
+        </div>
+      </div>
+
+      <!-- Clue 3: Invoice Detail -->
+      <div class="clue-card" id="clue-card-3">
+        <div class="clue-locked-view" id="clue-locked-3">
+          <div class="clue-category-row">
+            <span class="clue-icon-wrap">
+              <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </span>
+            <span class="clue-category">Invoice Detail</span>
+          </div>
+          <p class="clue-hint-text">What exactly changed on this month&rsquo;s bill?</p>
+          <div class="clue-unlock-row">
+            <span class="clue-cost-badge">−5 pts</span>
+            <button class="btn-unlock" id="btn-clue-3" onclick="unlockClue(3)">Unlock</button>
+          </div>
+        </div>
+        <div class="clue-revealed-view hidden" id="clue-revealed-3">
+          <span class="clue-unlocked-label">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Clue unlocked &mdash; &minus;5 pts
+          </span>
+          <p class="clue-finding">The $5,000 spike maps exactly to 25 auto-renewed licenses at $200/month. All flagged active &mdash; none confirmed by people.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCORE TRACKER -->
+  <div class="score-tracker anim-ready" id="score-tracker">
+    <div class="tracker-steps">
+      <div class="tracker-step">
+        <div class="tracker-dot active" id="dot-1">1</div>
+        <div>
+          <span class="tracker-step-name">Decision</span>
+          <span class="tracker-step-pts" id="step1-pts-label">up to 40 pts</span>
+        </div>
+      </div>
+      <div class="tracker-line" id="line-1"></div>
+      <div class="tracker-step">
+        <div class="tracker-dot" id="dot-2">2</div>
+        <div>
+          <span class="tracker-step-name">Action</span>
+          <span class="tracker-step-pts" id="step2-pts-label">up to 40 pts</span>
+        </div>
+      </div>
+      <div class="tracker-line" id="line-2"></div>
+      <div class="tracker-step">
+        <div class="tracker-dot" id="dot-3">3</div>
+        <div>
+          <span class="tracker-step-name">Confidence</span>
+          <span class="tracker-step-pts" id="step3-pts-label">20 pts</span>
+        </div>
+      </div>
+    </div>
+    <div class="score-total">
+      <span class="score-total-label">Your score</span>
+      <div>
+        <span class="score-num-big font-display" id="score-display">0</span>
+        <span class="score-denom">&thinsp;/ <span id="score-max">100</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <section class="section" id="step1">
+    <div class="section-header-row">
+      <div>
+        <p class="step-eyebrow">Step 1 &middot; Your Call</p>
+        <h2 class="section-title font-display">Which explanation do you act on?</h2>
+      </div>
+      <p class="section-hint">Pick one. There is no hedging in a real decision.</p>
+    </div>
+
+    <div class="choice-grid">
+      <button class="choice-btn" id="btn-keep" onclick="chooseDecision('keep')">
+        <span class="choice-btn-top">
+          <span class="choice-btn-label">Go with the AI &mdash; user growth drove the cost</span>
+          <svg class="choice-btn-arrow" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+        <span class="choice-btn-desc">The numbers are clear. Act on what AI found.</span>
+      </button>
+      <button class="choice-btn" id="btn-overrule" onclick="chooseDecision('overrule')">
+        <span class="choice-btn-top">
+          <span class="choice-btn-label">Look past the data &mdash; this looks like waste</span>
+          <svg class="choice-btn-arrow" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+        <span class="choice-btn-desc">The human check changes the picture.</span>
+      </button>
+    </div>
+
+    <div id="step1-feedback" class="feedback-box hidden">
+      <p class="fb-eyebrow">
+        <svg id="step1-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="step1-label"></span>
+      </p>
+      <p class="fb-title font-display" id="step1-title"></p>
+      <p class="fb-desc" id="step1-desc"></p>
+    </div>
+
+    <div id="reconsider-nudge" class="reconsider-nudge hidden">
+      <p><strong>Take another look at the human check.</strong> The AI counted all licenses — but it could not see who was actually still using them. Does that change your answer?</p>
+      <button class="btn-reconsider" onclick="reconsider()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        Change my answer
+      </button>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="section hidden" id="step2">
+    <p class="step-eyebrow">Step 2 &middot; Now What?</p>
+    <h2 class="section-title font-display">What does your decision actually cost?</h2>
+    <div class="cost-box" id="cost-box"></div>
+    <p class="h3-label">If you were the manager, what do you do first?</p>
+    <div class="action-grid">
+      <button class="action-btn" id="btn-a" onclick="chooseAction('A')">
+        <span class="action-key" id="key-a">A</span>
+        <span class="action-btn-label">Cancel the 25 licenses now</span>
+      </button>
+      <button class="action-btn" id="btn-b" onclick="chooseAction('B')">
+        <span class="action-key" id="key-b">B</span>
+        <span class="action-btn-label">Audit all teams first, then cancel</span>
+      </button>
+      <button class="action-btn" id="btn-c" onclick="chooseAction('C')">
+        <span class="action-key" id="key-c">C</span>
+        <span class="action-btn-label">Ask vendor for a usage report</span>
+      </button>
+    </div>
+    <div id="step2-feedback" class="feedback-box soft-bg hidden">
+      <p class="fb-eyebrow" style="color:var(--accent)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Your action
+      </p>
+      <p class="fb-desc" id="step2-text" style="color:var(--ink);font-size:15px;line-height:1.6;"></p>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="section hidden" id="step3">
+    <p class="step-eyebrow">Step 3 &middot; Honest Check</p>
+    <h2 class="section-title font-display">How confident are you, really?</h2>
+    <div class="choice-grid">
+      <button class="choice-btn" id="btn-high" onclick="chooseConfidence('high')">
+        <span class="choice-btn-top">
+          <span class="choice-btn-label">Yes, I am confident</span>
+          <svg class="choice-btn-arrow" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+        <span class="choice-btn-desc">The evidence is clear enough. I would act.</span>
+      </button>
+      <button class="choice-btn" id="btn-low" onclick="chooseConfidence('low')">
+        <span class="choice-btn-top">
+          <span class="choice-btn-label">Not quite &mdash; I need more</span>
+          <svg class="choice-btn-arrow" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+        <span class="choice-btn-desc">I would want one more check before committing.</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- FINAL SCORECARD -->
+  <div class="scorecard hidden" id="scorecard">
+    <div class="scorecard-top">
+      <p class="scorecard-eyebrow">Your final score</p>
+      <div>
+        <span class="score-num-big font-display" id="final-score-num" style="font-size:clamp(72px,12vw,100px);color:#fff;">0</span>
+        <span class="scorecard-denom">&thinsp;/ 100</span>
+      </div>
+      <div class="scorecard-bar-wrap">
+        <div class="scorecard-bar-fill" id="score-bar"></div>
+      </div>
+      <p class="scorecard-tier font-display" id="scorecard-tier"></p>
+      <p class="scorecard-tier-desc" id="scorecard-tier-desc"></p>
+    </div>
+
+    <div class="scorecard-breakdown">
+      <p class="scorecard-breakdown-title">Score breakdown</p>
+      <div class="breakdown-row" id="br-step1">
+        <span class="breakdown-label" id="br-step1-label"></span>
+        <span class="breakdown-pts" id="br-step1-pts"></span>
+      </div>
+      <div class="breakdown-row" id="br-step2">
+        <span class="breakdown-label" id="br-step2-label"></span>
+        <span class="breakdown-pts" id="br-step2-pts"></span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-label"><strong>Step 3:</strong> Confidence check</span>
+        <span class="breakdown-pts">+20</span>
+      </div>
+      <div class="breakdown-row hidden" id="br-clues">
+        <span class="breakdown-label" id="br-clues-label"></span>
+        <span class="breakdown-pts deduct" id="br-clues-pts"></span>
+      </div>
+      <div class="breakdown-row breakdown-total hidden" id="br-total">
+        <span class="breakdown-label"><strong>Total</strong></span>
+        <span class="breakdown-pts" id="br-total-pts"></span>
+      </div>
+
+      <div class="scorecard-takeaway" id="scorecard-takeaway">
+        <p id="scorecard-takeaway-text"></p>
+      </div>
+    </div>
+
+    <div class="scorecard-actions">
+      <button class="btn-restart" onclick="resetActivity()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="debrief-strip" style="margin-top:32px;">
+    <ol class="debrief-steps">
+      <li>AI Drafts</li><li class="debrief-dot">&bull;</li>
+      <li>Human Checks</li><li class="debrief-dot">&bull;</li>
+      <li>Human Decides</li>
+    </ol>
+    <p class="debrief-quote">&ldquo;Confidence is not accuracy.&rdquo;</p>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ─── State ─── */
+var score = 0;        /* earned points only */
+var cluesUsed = 0;    /* number of clues unlocked (each costs 5 pts) */
+var step1Pts = 0;
+var step2Pts = 0;
+var step3Pts = 20;
+var decision = null;
+var actionChoice = null;
+var confidence = null;
+var humanUnlocked = false;
+
+var timerSeconds = 180;
+var timerRunning = false;
+var timerInterval = null;
+
+var ACTION_FEEDBACK = {
+  A: "Fast, but you have skipped a step. You have not confirmed with HR whether those 25 people truly have no active needs. Speed without verification just creates the next problem.",
+  B: "This is the right move. You check whether the issue is bigger than one team, then cancel with evidence in hand. That is how insight turns into a defensible action.",
+  C: "Useful as a cross-check, but not as your first move. The vendor has every incentive to keep those licenses active. Go to HR first, then use the vendor report to validate."
+};
+
+var TIERS = [
+  { min: 95, label: "Full marks",    desc: "No clues needed. You read the data, trusted your read, and acted on it cleanly." },
+  { min: 80, label: "Sharp eye",     desc: "Right call, right action. You used evidence wisely and kept your score high." },
+  { min: 65, label: "Strong call",   desc: "Right direction. The clues helped — just trust your read a step earlier next time." },
+  { min: 0,  label: "Right track",   desc: "Good instinct on the core call. The follow-through needed one more check." }
+];
+
+/* ─── Helpers ─── */
+function getFinalScore() { return Math.max(0, score - cluesUsed * 5); }
+
+function updateMaxDisplay() {
+  var maxEl = document.getElementById('score-max');
+  var max = 100 - cluesUsed * 5;
+  gsap.to({ v: parseInt(maxEl.textContent) || 100 }, {
+    v: max, duration: 0.5, ease: 'power2.out',
+    onUpdate: function() { maxEl.textContent = Math.round(this.targets()[0].v); }
+  });
+}
+
+/* ─── Animations ─── */
+function revealEl(el, opts) {
+  if (!el) return;
+  el.classList.remove('hidden');
+  gsap.fromTo(el,
+    { opacity: 0, y: opts && opts.y !== undefined ? opts.y : 18 },
+    { opacity: 1, y: 0, duration: opts && opts.dur ? opts.dur : 0.45, ease: 'power2.out', delay: opts && opts.delay ? opts.delay : 0 }
+  );
+}
+
+function hideEl(el) {
+  if (!el || el.classList.contains('hidden')) return;
+  gsap.to(el, { opacity: 0, y: 8, duration: 0.25, ease: 'power2.in', onComplete: function() { el.classList.add('hidden'); } });
+}
+
+function shakeEl(el) {
+  gsap.to(el, { x: -7, duration: 0.06, repeat: 6, yoyo: true, ease: 'none', clearProps: 'x' });
+}
+
+function spawnPtsBadge(pts, refEl) {
+  var badge = document.createElement('div');
+  badge.className = 'pts-badge';
+  badge.textContent = '+' + pts + ' pts';
+  document.body.appendChild(badge);
+  var rect = refEl.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height / 2;
+  gsap.set(badge, { left: cx, top: cy + window.scrollY, xPercent: -50, yPercent: -50 });
+  gsap.to(badge, { y: -70, opacity: 0, scale: 1.1, duration: 1.4, ease: 'power2.out', onComplete: function() { badge.remove(); } });
+}
+
+function spawnMinusBadge(pts, refEl) {
+  var badge = document.createElement('div');
+  badge.className = 'minus-badge';
+  badge.textContent = '−' + pts + ' pts';
+  document.body.appendChild(badge);
+  var rect = refEl.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height / 2;
+  gsap.set(badge, { left: cx, top: cy + window.scrollY, xPercent: -50, yPercent: -50 });
+  gsap.to(badge, { y: 55, opacity: 0, scale: 0.9, duration: 1.2, ease: 'power2.in', onComplete: function() { badge.remove(); } });
+}
+
+function spawnStars(refEl, count, spread) {
+  var rect = refEl.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height / 2;
+  count = count || 6;
+  spread = spread || 55;
+  for (var i = 0; i < count; i++) {
+    (function(idx) {
+      var star = document.createElement('div');
+      star.style.cssText = 'position:fixed;z-index:9999;pointer-events:none;font-size:' + (12 + Math.random() * 8) + 'px;color:#0B6B61;line-height:1;user-select:none;';
+      star.textContent = '✦';
+      document.body.appendChild(star);
+      var angle = (idx / count) * Math.PI * 2 + (Math.random() - 0.5) * 1.0;
+      var dist = spread * (0.5 + Math.random() * 0.5);
+      gsap.set(star, { left: cx, top: cy + window.scrollY, xPercent: -50, yPercent: -50, opacity: 1, scale: 0.4 });
+      gsap.to(star, {
+        x: Math.cos(angle) * dist,
+        y: Math.sin(angle) * dist - 20,
+        scale: 1.2,
+        opacity: 0,
+        duration: 0.75 + Math.random() * 0.4,
+        ease: 'power2.out',
+        delay: Math.random() * 0.1,
+        onComplete: function() { if (star.parentNode) star.parentNode.removeChild(star); }
+      });
+    })(i);
+  }
+}
+
+function unlockHumanLensManual(btn) {
+  spawnStars(btn, 10, 80);
+  unlockHumanLens();
+}
+
+function animateScore(from, to) {
+  var el = document.getElementById('score-display');
+  gsap.to({ v: from }, {
+    v: to, duration: 0.9, ease: 'power2.out',
+    onUpdate: function() { el.textContent = Math.round(this.targets()[0].v); }
+  });
+}
+
+function unlockHumanLens() {
+  if (humanUnlocked) return;
+  humanUnlocked = true;
+  var overlay = document.getElementById('human-lock');
+  spawnStars(overlay, 12, 85);
+  gsap.to(overlay, {
+    opacity: 0, scale: 1.04, duration: 0.55, ease: 'power2.in',
+    onComplete: function() { overlay.style.display = 'none'; }
+  });
+  var card = document.getElementById('human-lens-card');
+  gsap.fromTo(card,
+    { boxShadow: '0 0 0 0 rgba(11,107,97,0)' },
+    { boxShadow: '0 0 0 6px rgba(11,107,97,0.3)', duration: 0.4, yoyo: true, repeat: 1, ease: 'power2.inOut' }
+  );
+}
+
+function markTrackerStep(step, pts) {
+  var dot = document.getElementById('dot-' + step);
+  var line = document.getElementById('line-' + step);
+  var nextDot = document.getElementById('dot-' + (step + 1));
+
+  gsap.to(dot, { scale: 1.2, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut',
+    onComplete: function() {
+      dot.classList.remove('active');
+      dot.classList.add('done');
+      dot.innerHTML = '<svg width="14" height="14" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+  });
+  if (line) { gsap.to(line, { backgroundColor: '#0B6B61', duration: 0.5, delay: 0.2 }); line.classList.add('done'); }
+  if (nextDot) { gsap.delayedCall(0.4, function() { nextDot.classList.add('active'); }); }
+  var ptLabels = ['step1-pts-label', 'step2-pts-label', 'step3-pts-label'];
+  var el = document.getElementById(ptLabels[step - 1]);
+  if (el) {
+    el.textContent = pts > 0 ? '+' + pts + ' pts' : '0 pts';
+    gsap.fromTo(el, { color: '#0B6B61' }, { color: '#5E6E7B', duration: 1.5, delay: 0.5 });
+  }
+}
+
+/* ─── Clue unlock ─── */
+function unlockClue(n) {
+  var card = document.getElementById('clue-card-' + n);
+  var locked = document.getElementById('clue-locked-' + n);
+  var revealed = document.getElementById('clue-revealed-' + n);
+  if (!card || card.classList.contains('unlocked')) return;
+  if (decision) return; /* disabled after Step 1 is answered */
+
+  cluesUsed++;
+  card.classList.add('unlocked');
+  updateMaxDisplay();
+
+  var btn = document.getElementById('btn-clue-' + n);
+  spawnMinusBadge(5, btn);
+  spawnStars(btn, 6, 50);
+
+  gsap.to(locked, { opacity: 0, y: -6, duration: 0.2, ease: 'power2.in', onComplete: function() {
+    locked.classList.add('hidden');
+    revealEl(revealed, { y: 8, dur: 0.35 });
+  }});
+}
+
+function lockAllRemainingClues() {
+  [1,2,3].forEach(function(n) {
+    var card = document.getElementById('clue-card-' + n);
+    if (card && !card.classList.contains('unlocked')) card.classList.add('disabled');
+  });
+}
+
+/* ─── Timer ─── */
+function formatTime(s) { var m = Math.floor(s/60), sec = s%60; return m+':'+(sec<10?'0':'')+sec; }
+function syncTimer() {
+  var el = document.getElementById('timer-display');
+  var st = document.getElementById('timer-status');
+  var sb = document.getElementById('btn-start');
+  el.textContent = formatTime(timerSeconds);
+  el.className = 'timer-display' + (timerSeconds===0 ? ' done' : timerSeconds<=30 && timerRunning ? ' urgent' : '');
+  st.textContent = timerSeconds===0 ? "Time’s up — make the call" : timerRunning ? "Time is running" : "Ready when you are";
+  sb.disabled = timerRunning || timerSeconds===0;
+}
+function startTimer() {
+  if (timerRunning || timerSeconds===0) return;
+  timerRunning = true; syncTimer();
+  timerInterval = setInterval(function() {
+    timerSeconds--;
+    if (timerSeconds<=0) { timerSeconds=0; timerRunning=false; clearInterval(timerInterval); timerInterval=null; }
+    syncTimer();
+  }, 1000);
+}
+function resetTimer() {
+  clearInterval(timerInterval); timerInterval=null; timerRunning=false; timerSeconds=180; syncTimer();
+}
+
+/* ─── Step 1 ─── */
+function chooseDecision(choice) {
+  if (decision === choice) return;
+  decision = choice;
+  actionChoice = null; confidence = null;
+  lockAllRemainingClues();
+
+  var keepBtn = document.getElementById('btn-keep');
+  var overBtn = document.getElementById('btn-overrule');
+  var fb = document.getElementById('step1-feedback');
+  var nudge = document.getElementById('reconsider-nudge');
+
+  keepBtn.className = 'choice-btn' + (choice === 'keep' ? ' wrong-selected' : '');
+  overBtn.className = 'choice-btn' + (choice === 'overrule' ? ' selected' : '');
+
+  if (choice === 'overrule') {
+    step1Pts = 40;
+    var prevScore = score;
+    score += 40;
+
+    fb.className = 'feedback-box accent-bg';
+    document.getElementById('step1-icon').innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+    document.getElementById('step1-label').textContent = 'Good call — +40 pts';
+    document.getElementById('step1-title').textContent = 'You looked past the data and caught what the AI missed. The count was correct. The meaning was not.';
+    document.getElementById('step1-desc').textContent = 'That gap — between what AI counted and what actually happened — is exactly what today’s session is about.';
+    revealEl(fb);
+    nudge.classList.add('hidden');
+
+    spawnPtsBadge(40, overBtn);
+    animateScore(prevScore, score);
+    markTrackerStep(1, 40);
+    unlockHumanLens();
+
+    document.getElementById('cost-box').innerHTML = '<strong>Now you need to act.</strong> You can recover <strong>$2,000 a month, $24,000 a year</strong> in wasted spend — but you need to verify with HR first. You do not want to cancel a license someone still actually needs.';
+    resetStep2UI(); resetStep3UI();
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('scorecard').classList.add('hidden');
+    setTimeout(function() {
+      revealEl(document.getElementById('step2'), { y: 24, dur: 0.5 });
+      document.getElementById('step2').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }, 600);
+
+  } else {
+    step1Pts = 0;
+    fb.className = 'feedback-box warn-bg';
+    document.getElementById('step1-icon').innerHTML = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
+    document.getElementById('step1-label').textContent = 'Worth a second look — 0 pts';
+    document.getElementById('step1-title').textContent = 'The AI ranking was built on what it could count — invoices and license numbers. It could not see that 25 of those licenses belong to people who already left.';
+    document.getElementById('step1-desc').textContent = 'Acting on this output means paying $2,000 a month for nothing. This is what happens when data is correct but incomplete.';
+    revealEl(fb);
+    shakeEl(keepBtn);
+    setTimeout(function() { revealEl(nudge, { y: 10, dur: 0.4 }); }, 300);
+    unlockHumanLens();
+
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('scorecard').classList.add('hidden');
+    resetStep2UI(); resetStep3UI();
+  }
+}
+
+function reconsider() {
+  decision = null;
+  /* Re-enable any locked (not yet unlocked) clue cards */
+  [1,2,3].forEach(function(n) {
+    var card = document.getElementById('clue-card-' + n);
+    if (card && !card.classList.contains('unlocked')) card.classList.remove('disabled');
+  });
+  document.getElementById('btn-keep').className = 'choice-btn';
+  document.getElementById('btn-overrule').className = 'choice-btn';
+  hideEl(document.getElementById('step1-feedback'));
+  hideEl(document.getElementById('reconsider-nudge'));
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step3').classList.add('hidden');
+  document.getElementById('scorecard').classList.add('hidden');
+  resetStep2UI(); resetStep3UI();
+  setTimeout(function() {
+    document.getElementById('step1').scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 200);
+}
+
+/* ─── Step 2 ─── */
+function resetStep2UI() {
+  ['a','b','c'].forEach(function(k) {
+    document.getElementById('btn-'+k).className = 'action-btn';
+    document.getElementById('key-'+k).className = 'action-key';
+  });
+  document.getElementById('step2-feedback').classList.add('hidden');
+  actionChoice = null;
+}
+
+function chooseAction(key) {
+  if (!decision || actionChoice === key) return;
+  actionChoice = key;
+  step2Pts = key==='B' ? 40 : key==='C' ? 20 : 0;
+  var prevScore = score;
+  score += step2Pts;
+
+  ['a','b','c'].forEach(function(k) {
+    document.getElementById('btn-'+k).className = 'action-btn' + (k.toUpperCase()===key ? ' selected' : '');
+    document.getElementById('key-'+k).className = 'action-key';
+  });
+
+  document.getElementById('step2-text').textContent = ACTION_FEEDBACK[key];
+  revealEl(document.getElementById('step2-feedback'), { y: 10 });
+
+  if (step2Pts > 0) {
+    spawnPtsBadge(step2Pts, document.getElementById('btn-'+key.toLowerCase()));
+    animateScore(prevScore, score);
+  } else {
+    shakeEl(document.getElementById('btn-'+key.toLowerCase()));
+  }
+  markTrackerStep(2, step2Pts);
+
+  resetStep3UI();
+  document.getElementById('scorecard').classList.add('hidden');
+  setTimeout(function() {
+    revealEl(document.getElementById('step3'), { y: 24, dur: 0.5 });
+    document.getElementById('step3').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 500);
+}
+
+/* ─── Step 3 ─── */
+function resetStep3UI() {
+  document.getElementById('btn-high').className = 'choice-btn';
+  document.getElementById('btn-low').className = 'choice-btn';
+  confidence = null;
+}
+
+function chooseConfidence(choice) {
+  if (!decision || !actionChoice || confidence === choice) return;
+  confidence = choice;
+  var prevScore = score;
+  score += 20;
+
+  document.getElementById('btn-high').className = 'choice-btn' + (choice==='high' ? ' selected' : '');
+  document.getElementById('btn-low').className  = 'choice-btn' + (choice==='low'  ? ' selected' : '');
+
+  spawnPtsBadge(20, document.getElementById('btn-'+choice));
+  animateScore(prevScore, score);
+  markTrackerStep(3, 20);
+
+  setTimeout(function() { showScorecard(); }, 700);
+}
+
+/* ─── Scorecard ─── */
+function showScorecard() {
+  var sc = document.getElementById('scorecard');
+  revealEl(sc, { y: 32, dur: 0.6 });
+
+  var finalScore = getFinalScore();
+  var cluePenalty = cluesUsed * 5;
+
+  var tier = TIERS.find(function(t) { return finalScore >= t.min; }) || TIERS[TIERS.length-1];
+  document.getElementById('scorecard-tier').textContent = tier.label;
+  document.getElementById('scorecard-tier-desc').textContent = tier.desc;
+
+  /* Animate final score number */
+  var finalEl = document.getElementById('final-score-num');
+  gsap.to({ v: 0 }, {
+    v: finalScore, duration: 1.4, ease: 'power2.out', delay: 0.3,
+    onUpdate: function() { finalEl.textContent = Math.round(this.targets()[0].v); }
+  });
+
+  setTimeout(function() {
+    document.getElementById('score-bar').style.width = finalScore + '%';
+  }, 400);
+
+  /* Breakdown */
+  document.getElementById('br-step1-label').innerHTML = step1Pts > 0
+    ? '<strong>Step 1:</strong> Looked past the data &mdash; correct'
+    : '<strong>Step 1:</strong> Went with the AI &mdash; missed the waste';
+  document.getElementById('br-step1-pts').textContent = step1Pts > 0 ? '+'+step1Pts : '0';
+  document.getElementById('br-step1-pts').className = 'breakdown-pts' + (step1Pts===0 ? ' zero' : '');
+
+  var step2Labels = { B: 'Audit all teams first (best action)', C: 'Asked vendor for report (not first move)', A: 'Cancelled licenses immediately (skipped HR check)' };
+  document.getElementById('br-step2-label').innerHTML = '<strong>Step 2:</strong> ' + (step2Labels[actionChoice] || '');
+  document.getElementById('br-step2-pts').textContent = step2Pts > 0 ? '+'+step2Pts : '0';
+  document.getElementById('br-step2-pts').className = 'breakdown-pts' + (step2Pts===0 ? ' zero' : '');
+
+  /* Clue penalty row */
+  if (cluePenalty > 0) {
+    var plural = cluesUsed === 1 ? 'clue' : 'clues';
+    document.getElementById('br-clues-label').innerHTML = '<strong>Clues used:</strong> ' + cluesUsed + ' ' + plural + ' &times; &minus;5 pts';
+    document.getElementById('br-clues-pts').textContent = '−' + cluePenalty;
+    document.getElementById('br-clues').classList.remove('hidden');
+    /* Total row */
+    document.getElementById('br-total-pts').textContent = finalScore;
+    document.getElementById('br-total').classList.remove('hidden');
+  } else {
+    document.getElementById('br-clues').classList.add('hidden');
+    document.getElementById('br-total').classList.add('hidden');
+  }
+
+  /* Takeaway */
+  var takeaway;
+  if (finalScore >= 95) {
+    takeaway = '<strong>Perfect sequence, no clues needed.</strong> You identified the gap in the AI’s data, acted on the human finding, and chose the most defensible path forward. This is the human-in-the-loop in practice.';
+  } else if (finalScore >= 80) {
+    takeaway = '<strong>Right call, right action.</strong> You verified before you acted and kept your score high. The clue cost was worth it — better to confirm than guess at $2,000/month.';
+  } else if (finalScore >= 65) {
+    takeaway = '<strong>Right direction.</strong> You correctly overruled the AI. Next time, trust your read a step earlier — fewer clues, same conclusion.';
+  } else {
+    takeaway = '<strong>Right instinct on the core call.</strong> You spotted the waste. The follow-through needed one more check — verify with HR before any cancellation to avoid disrupting active users.';
+  }
+  document.getElementById('scorecard-takeaway-text').innerHTML = takeaway;
+
+  gsap.fromTo('.breakdown-row', { opacity: 0, x: -12 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.4, delay: 0.8, ease: 'power2.out' });
+  gsap.fromTo('.scorecard-takeaway', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, delay: 1.5, ease: 'power2.out' });
+
+  setTimeout(function() { sc.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+}
+
+/* ─── Reset ─── */
+function resetActivity() {
+  resetTimer();
+  score = 0; cluesUsed = 0;
+  step1Pts = 0; step2Pts = 0;
+  decision = null; actionChoice = null; confidence = null; humanUnlocked = false;
+
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('score-max').textContent = '100';
+  document.getElementById('btn-keep').className = 'choice-btn';
+  document.getElementById('btn-overrule').className = 'choice-btn';
+  document.getElementById('step1-feedback').className = 'feedback-box hidden';
+  document.getElementById('reconsider-nudge').classList.add('hidden');
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step3').classList.add('hidden');
+  document.getElementById('scorecard').classList.add('hidden');
+  document.getElementById('br-clues').classList.add('hidden');
+  document.getElementById('br-total').classList.add('hidden');
+  resetStep2UI(); resetStep3UI();
+
+  /* Reset clue cards */
+  [1,2,3].forEach(function(n) {
+    var card = document.getElementById('clue-card-' + n);
+    var locked = document.getElementById('clue-locked-' + n);
+    var revealed = document.getElementById('clue-revealed-' + n);
+    if (card) { card.classList.remove('unlocked', 'disabled'); }
+    if (locked) { locked.classList.remove('hidden'); gsap.set(locked, { opacity: 1, y: 0 }); }
+    if (revealed) { revealed.classList.add('hidden'); }
+  });
+
+  /* Restore lock overlay */
+  var overlay = document.getElementById('human-lock');
+  overlay.style.display = '';
+  gsap.set(overlay, { opacity: 1, scale: 1 });
+  gsap.set(document.getElementById('human-lens-card'), { boxShadow: 'none' });
+
+  /* Reset tracker dots */
+  [1,2,3].forEach(function(n) {
+    var dot = document.getElementById('dot-'+n);
+    dot.classList.remove('done', 'active');
+    dot.innerHTML = n;
+  });
+  document.getElementById('dot-1').classList.add('active');
+  document.getElementById('step1-pts-label').textContent = 'up to 40 pts';
+  document.getElementById('step2-pts-label').textContent = 'up to 40 pts';
+  document.getElementById('step3-pts-label').textContent = '20 pts';
+  [1,2].forEach(function(n) {
+    var line = document.getElementById('line-'+n);
+    if (line) { line.classList.remove('done'); line.style.backgroundColor = ''; }
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ─── Page load animations ─── */
+window.addEventListener('DOMContentLoaded', function() {
+  syncTimer();
+
+  gsap.set(['#anim-header','#anim-context','#anim-timer','#anim-scenario','#evidence-section','#score-tracker'], { y: 20 });
+  gsap.set(['#ai-row-1','#ai-row-2','#ai-row-3','#ai-row-4'], { x: -16 });
+
+  gsap.to('#anim-header',      { opacity:1, y:0, duration:0.6, ease:'power2.out', delay:0.1 });
+  gsap.to('#anim-context',     { opacity:1, y:0, duration:0.5, ease:'power2.out', delay:0.25 });
+  gsap.to('#anim-timer',       { opacity:1, y:0, duration:0.5, ease:'power2.out', delay:0.35 });
+  gsap.to('#anim-scenario',    { opacity:1, y:0, duration:0.55, ease:'power2.out', delay:0.45 });
+  gsap.to('#evidence-section', { opacity:1, y:0, duration:0.5, ease:'power2.out', delay:0.6 });
+  gsap.to('#score-tracker',    { opacity:1, y:0, duration:0.5, ease:'power2.out', delay:0.7 });
+
+  gsap.to(['#ai-row-1','#ai-row-2','#ai-row-3','#ai-row-4'], {
+    opacity:1, x:0, stagger:0.1, duration:0.45, ease:'power2.out', delay:0.65
+  });
+});
+</script>
+</body>
+</html>
