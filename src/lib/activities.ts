@@ -157,8 +157,9 @@ async function loadActivity(folderName: string): Promise<Activity> {
   const config: ActivityConfig = JSON.parse(configRaw);
 
   const phases: PhaseInfo[] = [];
+  const phaseFilesToLoad = PHASE_FILES.slice(0, config.phases || PHASE_FILES.length);
 
-  for (const pf of PHASE_FILES) {
+  for (const pf of phaseFilesToLoad) {
     const raw = readFileIfExists(path.join(dir, pf.file));
     if (!raw) {
       phases.push({
