@@ -1,0 +1,44 @@
+{
+  "id": "activity_02",
+  "slug": "process-bottleneck",
+  "title": "The Process Bottleneck Hunt",
+  "subtitle": "Order fulfilment fell from 4 days to 11. Where is the time going?",
+  "domain": "Operations",
+  "duration_minutes": 30,
+  "ai_tool": "Claude, Copilot, ChatGPT, etc.",
+  "difficulty": "Medium",
+  "phases": 5,
+  "data_files": [
+    {
+      "filename": "Order_Lifecycle_Log.xlsx",
+      "display_name": "Order Lifecycle Log",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Warehouse_Shift_Report.xlsx",
+      "display_name": "Warehouse Shift Report",
+      "type": "excel",
+      "role": "supporting_source"
+    },
+    {
+      "filename": "Ops_Director_Memo.docx",
+      "display_name": "Ops Director Memo",
+      "type": "docx",
+      "role": "distractor"
+    },
+    {
+      "filename": "Carrier_SLA_Summary.docx",
+      "display_name": "Carrier SLA Summary",
+      "type": "docx",
+      "role": "supporting_source"
+    }
+  ],
+  "learning_objectives": [
+    "Use AI to decompose end-to-end process time into stage-level contributions",
+    "Detect hidden wait states and handoff delays in operational data",
+    "Distinguish systemic bottlenecks from one-off exceptions",
+    "Quantify the cost of delay and prioritise fixes by impact"
+  ],
+  "deliverable": "Bottleneck analysis with root-cause map and prioritised fix list"
+}

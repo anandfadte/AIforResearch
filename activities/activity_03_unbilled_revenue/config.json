@@ -1,0 +1,44 @@
+{
+  "id": "activity_03",
+  "slug": "unbilled-revenue",
+  "title": "The Unbilled Revenue Leak",
+  "subtitle": "The company delivered $4.2M in services last quarter that never got invoiced. Why?",
+  "domain": "Revenue Assurance",
+  "duration_minutes": 30,
+  "ai_tool": "Claude, Copilot, ChatGPT, etc.",
+  "difficulty": "Hard",
+  "phases": 5,
+  "data_files": [
+    {
+      "filename": "Service_Delivery_Log.xlsx",
+      "display_name": "Service Delivery Log",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Billing_System_Extract.xlsx",
+      "display_name": "Billing System Extract",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Account_Manager_Notes.docx",
+      "display_name": "Account Manager Notes",
+      "type": "docx",
+      "role": "supporting_source"
+    },
+    {
+      "filename": "Finance_VP_Email.docx",
+      "display_name": "Finance VP Email",
+      "type": "docx",
+      "role": "distractor"
+    }
+  ],
+  "learning_objectives": [
+    "Use AI to reconcile delivery records against billing records to find gaps",
+    "Detect systematic billing failures vs. one-off exceptions",
+    "Quantify revenue leakage by root cause category",
+    "Distinguish contractual write-offs from process failures"
+  ],
+  "deliverable": "Revenue leakage report with quantified gaps and recovery plan"
+}

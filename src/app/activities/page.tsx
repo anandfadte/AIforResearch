@@ -28,8 +28,8 @@ export default async function ActivitiesPage() {
           Activities
         </h1>
         <p className="mt-3 max-w-[700px] text-text-secondary">
-          Five self-paced research activities. Each follows a 6-phase progressive unlock:
-          Brief, Source Triage, Deep Research, Insight Framing, Deliverable, Debrief.
+          Five self-paced research activities. Each follows a 5-phase progressive unlock:
+          Brief, Source Triage, Deep Research, Insight Framing, and Deliver &amp; Debrief.
         </p>
       </div>
 

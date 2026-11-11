@@ -149,11 +149,11 @@ async function convertSections(sections: Record<string, string>): Promise<PhaseC
   return content;
 }
 
-async function loadActivity(folderName: string): Promise<Activity> {
+async function loadActivity(folderName: string): Promise<Activity | null> {
   const dir = path.join(ACTIVITIES_DIR, folderName);
 
   const configRaw = readFileIfExists(path.join(dir, "config.json"));
-  if (!configRaw) throw new Error(`Missing config.json for ${folderName}`);
+  if (!configRaw) return null;
   const config: ActivityConfig = JSON.parse(configRaw);
 
   const phases: PhaseInfo[] = [];
@@ -195,7 +195,7 @@ export async function getActivities(): Promise<Activity[]> {
       return fs.statSync(full).isDirectory() && entry.startsWith("activity_");
     });
 
-  const activities = await Promise.all(folders.map(loadActivity));
+  const activities = (await Promise.all(folders.map(loadActivity))).filter(Boolean) as Activity[];
   return activities.sort((a, b) => {
     const numA = parseInt(a.config.id.replace("activity_", ""), 10);
     const numB = parseInt(b.config.id.replace("activity_", ""), 10);

@@ -1,0 +1,44 @@
+{
+  "id": "activity_05",
+  "slug": "attrition-puzzle",
+  "title": "The Attrition Puzzle",
+  "subtitle": "Voluntary attrition has gone from 8% to 18% in 12 months. Where are people going and why?",
+  "domain": "People Analytics",
+  "duration_minutes": 30,
+  "ai_tool": "Claude, Copilot, ChatGPT, etc.",
+  "difficulty": "Hard",
+  "phases": 5,
+  "data_files": [
+    {
+      "filename": "Workforce_Snapshot.xlsx",
+      "display_name": "Workforce Snapshot",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Exit_Survey_Data.xlsx",
+      "display_name": "Exit Survey Data",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Compensation_Analysis.xlsx",
+      "display_name": "Compensation Analysis",
+      "type": "excel",
+      "role": "supporting_source"
+    },
+    {
+      "filename": "CHRO_Email_Thread.docx",
+      "display_name": "CHRO Email Thread",
+      "type": "docx",
+      "role": "distractor"
+    }
+  ],
+  "learning_objectives": [
+    "Use AI to find where attrition is actually concentrated, not where people assume it is",
+    "Distinguish between what exit surveys say and what workforce data shows",
+    "Identify pay compression as a structural driver hidden inside survey responses",
+    "Build a retention brief that names the specific problem and a costed fix"
+  ],
+  "deliverable": "One-page retention brief for the CHRO board presentation"
+}

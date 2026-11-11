@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Applied AI Studio — Research & Analysis",
   description:
-    "AI-powered research and analysis. Five self-paced activities with 6-phase progressive unlock.",
+    "AI-powered research and analysis. Five self-paced activities with 5-phase progressive unlock.",
 };
 
 export default function RootLayout({
