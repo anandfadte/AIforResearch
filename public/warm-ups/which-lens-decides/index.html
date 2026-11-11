@@ -170,22 +170,22 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
 .tracker-steps { display: flex; align-items: center; gap: 0; }
 .tracker-step { display: flex; align-items: center; gap: 8px; }
 .tracker-dot {
-  width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--line);
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--line);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--muted); background: var(--surface-2);
+  font-size: 14px; font-weight: 700; color: var(--muted); background: var(--surface-2);
   transition: all 0.3s;
   flex-shrink: 0;
 }
 .tracker-dot.done { background: var(--accent); border-color: var(--accent); color: #fff; }
 .tracker-dot.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-.tracker-step-name { font-size: 12px; font-weight: 700; color: var(--ink); display: block; }
-.tracker-step-pts { font-size: 11px; color: var(--muted); display: block; }
-.tracker-line { width: 32px; height: 2px; background: var(--line); margin: 0 8px; flex-shrink: 0; transition: background 0.4s; }
+.tracker-step-name { font-size: 14px; font-weight: 700; color: var(--ink); display: block; }
+.tracker-step-pts { font-size: 12px; color: var(--muted); display: block; }
+.tracker-line { width: 40px; height: 2px; background: var(--line); margin: 0 8px; flex-shrink: 0; transition: background 0.4s; }
 .tracker-line.done { background: var(--accent); }
 
 .score-total { text-align: right; }
 .score-total-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; }
-.score-num-big { font-family: 'Fraunces', Georgia, serif; font-size: 36px; font-weight: 600; line-height: 1; color: var(--accent); display: inline-block; }
+.score-num-big { font-family: 'Fraunces', Georgia, serif; font-size: 44px; font-weight: 600; line-height: 1; color: var(--accent); display: inline-block; }
 .score-denom { font-size: 16px; color: var(--muted); font-weight: 600; }
 
 @media (max-width: 540px) {
@@ -294,6 +294,34 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
 .debrief-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; list-style: none; margin: 0; padding: 0; }
 .debrief-dot { color: var(--muted); font-size: 11px; }
 .debrief-quote { font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; font-style: italic; margin: 0; }
+
+/* ── AI Leverage ── */
+.ai-leverage-row { display: flex; align-items: center; gap: 20px; margin-top: 16px; padding: 18px 24px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; }
+.leverage-grade-block { flex-shrink: 0; text-align: center; width: 56px; }
+.leverage-letter { font-family: 'Fraunces', Georgia, serif; font-size: 48px; font-weight: 700; line-height: 1; display: block; }
+.leverage-grade-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; display: block; margin-top: 3px; color: #fff; }
+.leverage-a .leverage-letter { color: #7EC8C0; }
+.leverage-b .leverage-letter { color: #F59E0B; }
+.leverage-c .leverage-letter { color: #F07070; }
+.leverage-text { flex: 1; min-width: 0; }
+.leverage-title { font-size: 14px; font-weight: 700; color: #fff; margin: 0 0 4px; }
+.leverage-desc { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.65); margin: 0; }
+
+/* ── Cost Reveal ── */
+.cost-reveal { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+.cost-reveal-header { padding: 20px 28px 16px; border-bottom: 1px solid var(--line); }
+.cost-reveal-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+.cost-reveal-heading { font-family: 'Fraunces', Georgia, serif; font-size: clamp(18px, 2.5vw, 22px); font-weight: 600; line-height: 1.2; margin: 0; color: var(--ink); }
+.cost-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 28px; border-bottom: 1px solid var(--line); }
+.cost-row-left { flex: 1; min-width: 0; }
+.cost-row-label { font-size: 14px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
+.cost-row-desc { font-size: 12px; color: var(--muted); display: block; }
+.cost-row-amount { font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 600; white-space: nowrap; flex-shrink: 0; color: var(--muted); }
+.cost-row-amount.cost-danger { color: #B45309; }
+.cost-row.cost-net { background: var(--accent-soft); border-bottom: none; }
+.cost-row.cost-net .cost-row-label { color: var(--accent); font-size: 15px; }
+.cost-row.cost-net .cost-row-amount { color: var(--accent); font-size: 26px; }
+.cost-reveal-punchline { padding: 16px 28px; background: var(--surface-2); border-top: 1px solid var(--line); font-family: 'Fraunces', Georgia, serif; font-size: clamp(14px, 2vw, 16px); font-weight: 600; font-style: italic; color: var(--ink); line-height: 1.5; margin: 0; }
 
 /* ── Utility ── */
 .hidden { display: none !important; }
@@ -676,6 +704,18 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
       <div class="scorecard-takeaway" id="scorecard-takeaway">
         <p id="scorecard-takeaway-text"></p>
       </div>
+
+      <!-- AI Leverage grade -->
+      <div class="ai-leverage-row hidden" id="ai-leverage-row">
+        <div class="leverage-grade-block" id="leverage-grade-block">
+          <span class="leverage-letter" id="leverage-letter">A</span>
+          <span class="leverage-grade-label">AI Leverage</span>
+        </div>
+        <div class="leverage-text">
+          <p class="leverage-title" id="leverage-title"></p>
+          <p class="leverage-desc" id="leverage-desc"></p>
+        </div>
+      </div>
     </div>
 
     <div class="scorecard-actions">
@@ -684,6 +724,43 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
         Try Again
       </button>
     </div>
+  </div>
+
+  <!-- Cost Reveal panel -->
+  <div class="cost-reveal hidden" id="cost-reveal">
+    <div class="cost-reveal-header">
+      <p class="cost-reveal-eyebrow">The real cost of this decision</p>
+      <h3 class="cost-reveal-heading">What did AI actually cost here?</h3>
+    </div>
+    <div class="cost-row">
+      <div class="cost-row-left">
+        <span class="cost-row-label">AI tool query</span>
+        <span class="cost-row-desc">GPT-4 / Claude API call to triage 3 contract records</span>
+      </div>
+      <span class="cost-row-amount">$0.03</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-row-left">
+        <span class="cost-row-label">Blind trust in AI — annual cost</span>
+        <span class="cost-row-desc">Average 1 missed vendor error per week × $462 recovery cost</span>
+      </div>
+      <span class="cost-row-amount cost-danger">$24,000 / yr</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-row-left">
+        <span class="cost-row-label">Human check (this scenario)</span>
+        <span class="cost-row-desc">15 min analyst time × $600 / day rate</span>
+      </div>
+      <span class="cost-row-amount">$18.75</span>
+    </div>
+    <div class="cost-row cost-net">
+      <div class="cost-row-left">
+        <span class="cost-row-label">Net saving — human check per year</span>
+        <span class="cost-row-desc">$24,000 risk avoided − $975 annual check cost</span>
+      </div>
+      <span class="cost-row-amount">$23,025 / yr</span>
+    </div>
+    <p class="cost-reveal-punchline">"AI was worth $0.03. The human check was worth $23,025. Neither worked without the other."</p>
   </div>
 
   <!-- FOOTER -->
@@ -1064,6 +1141,12 @@ function chooseConfidence(choice) {
   setTimeout(function() { showScorecard(); }, 700);
 }
 
+/* ─── AI Leverage grade ─── */
+function getAILeverage() {
+  if (decision !== 'overrule') return 'C';
+  return cluesUsed <= 1 ? 'A' : 'B';
+}
+
 /* ─── Scorecard ─── */
 function showScorecard() {
   var sc = document.getElementById('scorecard');
@@ -1129,6 +1212,33 @@ function showScorecard() {
   gsap.fromTo('.breakdown-row', { opacity: 0, x: -12 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.4, delay: 0.8, ease: 'power2.out' });
   gsap.fromTo('.scorecard-takeaway', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, delay: 1.5, ease: 'power2.out' });
 
+  /* AI Leverage grade */
+  var leverageRow = document.getElementById('ai-leverage-row');
+  var gradeBlock = document.getElementById('leverage-grade-block');
+  var grade = getAILeverage();
+  var letterEl = document.getElementById('leverage-letter');
+  var titleEl = document.getElementById('leverage-title');
+  var descEl = document.getElementById('leverage-desc');
+  letterEl.textContent = grade;
+  gradeBlock.className = 'leverage-grade-block leverage-' + grade.toLowerCase();
+  if (grade === 'A') {
+    titleEl.textContent = 'Expert leverage';
+    descEl.textContent = 'You overruled the AI with minimal clue support — your own judgment did the work. That is the highest form of human-AI collaboration.';
+  } else if (grade === 'B') {
+    titleEl.textContent = 'Good leverage';
+    descEl.textContent = 'Right call, but you needed several clues to get there. The goal is to reach the same conclusion with less AI scaffolding.';
+  } else {
+    titleEl.textContent = 'Low leverage';
+    descEl.textContent = 'You followed the AI recommendation. The human lens had the evidence to overrule it — next time, check the human finding before you decide.';
+  }
+  leverageRow.classList.remove('hidden');
+  gsap.fromTo(leverageRow, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, delay: 2.0, ease: 'power2.out' });
+
+  /* Cost Reveal panel */
+  var costPanel = document.getElementById('cost-reveal');
+  costPanel.classList.remove('hidden');
+  gsap.fromTo(costPanel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 2.5, ease: 'power2.out' });
+
   setTimeout(function() { sc.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
 }
 
@@ -1150,6 +1260,8 @@ function resetActivity() {
   document.getElementById('scorecard').classList.add('hidden');
   document.getElementById('br-clues').classList.add('hidden');
   document.getElementById('br-total').classList.add('hidden');
+  document.getElementById('ai-leverage-row').classList.add('hidden');
+  document.getElementById('cost-reveal').classList.add('hidden');
   resetStep2UI(); resetStep3UI();
 
   /* Reset clue cards */
