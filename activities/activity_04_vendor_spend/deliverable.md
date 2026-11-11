@@ -11,10 +11,14 @@ Your output is a one-page cloud savings plan. Write it for someone heading into 
 
 ## do_this
 
-1. Brief your AI tool clearly: "Create a one-page cloud savings plan for a CTO board presentation. Show the cost-usage gap. Break down the waste into categories with monthly dollar amounts. Organise into three implementation waves: Week 1, Month 1, Month 3. Include our top recommendation with expected monthly savings. Use our three insights: [paste your insights here]."
-2. Review the first draft together. Revise specific parts: tighten the language, fix any numbers that do not match your analysis, and remove any claims you cannot support with evidence.
-3. Choose a presenter. That person shares the plan and names one thing the AI tool got wrong or missed during the activity.
-4. After presenting, reflect as a group: which data source did you trust the most and why? Where did the AI change your thinking, and where did your group overrule it?
+1. Brief your AI tool with your three insights, the audience, and the output format. Use the prompting guideline below as your template.
+2. Review the first draft as a group. Check every number traces to your data, tighten the language, cut anything you cannot support.
+3. Choose a presenter and share the deliverable with the group.
+
+Discuss as a group:
+- Which source did you trust most? What earned that trust?
+- Where did the AI change your thinking? Where did you overrule it?
+- If you had one more hour, what would you verify first?
 
 ## prompting_guideline
 

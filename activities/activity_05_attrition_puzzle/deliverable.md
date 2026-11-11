@@ -11,10 +11,14 @@ Your output is a one-page retention brief. Write it for someone who has 10 minut
 
 ## do_this
 
-1. Brief your AI tool clearly: "Write a one-page retention brief for a CHRO board presentation. Tell the board where attrition is concentrated, what is driving it, what it is costing the company, and what the top recommendation is with its expected impact. Use only these insights: [paste your three insights]."
-2. Review the first draft together. Revise specific parts: tighten the language, check that every number traces back to your data, and remove anything you cannot support with evidence.
-3. Choose a presenter. That person shares the brief and names one thing the AI tool got wrong or missed during the activity.
-4. After presenting, reflect as a group: which data source did you trust the most and why? Where did the AI change your thinking, and where did your group overrule it?
+1. Brief your AI tool with your three insights, the audience, and the output format. Use the prompting guideline below as your template.
+2. Review the first draft as a group. Check every number traces to your data, tighten the language, cut anything you cannot support.
+3. Choose a presenter and share the deliverable with the group.
+
+Discuss as a group:
+- Which source did you trust most? What earned that trust?
+- Where did the AI change your thinking? Where did you overrule it?
+- If you had one more hour, what would you verify first?
 
 ## prompting_guideline
 

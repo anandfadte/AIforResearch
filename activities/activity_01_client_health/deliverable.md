@@ -11,10 +11,14 @@ Your output is a one-page client health assessment for the account leader. Write
 
 ## do_this
 
-1. Brief your AI tool clearly: "Create a one-page client health assessment for an account leader. Show satisfaction scores by service line, not blended. Identify what is driving the CSAT drop from 8.2 to 6.4. Distinguish between service problems and perception problems. Include a prioritised action plan. Use our three insights: [paste your insights here]."
-2. Review the first draft together. Revise specific parts: tighten the language, fix any numbers that do not match your analysis, and remove any claims you cannot support with evidence.
-3. Choose a presenter. That person shares the assessment and names one thing the AI tool got wrong or missed during the activity.
-4. After presenting, reflect as a group: which data source did you trust the most and why? Where did the AI change your thinking, and where did your group overrule it?
+1. Brief your AI tool with your three insights, the audience, and the output format. Use the prompting guideline below as your template.
+2. Review the first draft as a group. Check every number traces to your data, tighten the language, cut anything you cannot support.
+3. Choose a presenter and share the deliverable with the group.
+
+Discuss as a group:
+- Which source did you trust most? What earned that trust?
+- Where did the AI change your thinking? Where did you overrule it?
+- If you had one more hour, what would you verify first?
 
 ## prompting_guideline
 
