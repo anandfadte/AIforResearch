@@ -40,4 +40,4 @@ The leakage breaks into three categories: unmigrated acquisition projects ($1.1M
 
 ## reveal_takeaway
 
-Within the next 7 days, run one reconciliation from your day job, any pair of systems that should agree but might not, through the same profiling and matching process with your AI tool. The technique of systematic record matching will surface gaps you did not know existed.
+Find one pair of systems in your own work that should agree but might not, and run them through the same matching process with your AI tool this week. Systematic reconciliation surfaces gaps you would never catch by reviewing either system alone.

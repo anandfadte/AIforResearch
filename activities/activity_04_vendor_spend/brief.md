@@ -29,4 +29,4 @@ Give your AI a cost analyst role rather than a helpful assistant role. Paste the
 
 ## checkpoint
 
-Can your pod explain in one sentence where you think the waste is hiding and why? If not, refine your hypotheses.
+If the CTO asked "what is your best guess before you look at the data?" could you give her a specific, testable answer? Not a category of waste — a mechanism. If not, your hypotheses are still too broad.

@@ -40,4 +40,4 @@ The blowout is primarily a handoff and queue time story. Picking and packing tim
 
 ## reveal_takeaway
 
-Within the next 7 days, take one process from your day job, any workflow that has slowed down, and apply the same stage-by-stage decomposition with your AI tool. The technique of measuring delay by stage rather than looking at the end-to-end average will change what you find.
+Pick one workflow from your own work that has slowed down. Apply the same stage-by-stage decomposition with your AI tool before the week is out. Measuring delay by stage, rather than looking at the end-to-end average, will show you where the problem actually lives.

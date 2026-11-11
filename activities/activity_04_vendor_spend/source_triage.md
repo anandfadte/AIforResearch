@@ -7,7 +7,7 @@ Source Auditing | Evaluating data completeness, cost allocation accuracy, and po
 
 ## context
 
-Download and open your data files. Before analysing anything, profile each source: what time period does it cover, what services or vendors does it include, and are there gaps or categories that might be missing?
+Cloud billing exports look comprehensive and usually are not. Services get tagged inconsistently, annual subscriptions appear as one-off spikes, and some tools never show up at all. Understand what your data is hiding before you start reading the numbers.
 
 ## files
 

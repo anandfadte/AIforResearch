@@ -7,7 +7,7 @@ Source Auditing | Stress-testing provenance, recency, scope coverage, and author
 
 ## context
 
-Download each file and open everything before trusting anything.
+Four files, four different agendas. At least one was written by someone who wants a particular response from the account leader. Know who made each piece of data and why before you let it shape your diagnosis.
 
 ## files
 

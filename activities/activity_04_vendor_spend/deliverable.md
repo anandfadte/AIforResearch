@@ -40,4 +40,4 @@ The cost-usage gap breaks into four categories: orphaned and idle resources ($21
 
 ## reveal_takeaway
 
-Within the next 7 days, pull your own team's cloud or vendor spending data and apply the same cost-vs-usage decomposition with your AI tool. The habit of asking "is this cost growing because usage is growing?" will change what you find.
+Pull one spending report from your own team and ask the same question: is this cost growing because usage is growing, or for some other reason? Run it through the decomposition with your AI tool. You will find at least one line item that does not make sense.

@@ -7,7 +7,7 @@ Source Auditing | Evaluating data completeness, matching keys, and potential bli
 
 ## context
 
-Download and open your data files. Before reconciling anything, profile each source: what period does it cover, what fields does it contain, and can you join delivery records to billing records?
+A reconciliation is only as good as the join. If the delivery system and the billing system do not share a reliable matching field, you are guessing, not analysing. Find that out before you start matching records.
 
 ## files
 

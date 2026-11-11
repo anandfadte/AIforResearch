@@ -29,4 +29,4 @@ Give your AI a revenue assurance role rather than a helpful assistant role. Past
 
 ## checkpoint
 
-Can your pod explain in one sentence where you think the leakage is concentrated and why? If not, refine your hypotheses.
+The CFO is not asking for a list of possibilities. She needs a specific hypothesis: which process breaks down, for which accounts or service lines, and why it has been getting worse. Can your pod answer that in one sentence?

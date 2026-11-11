@@ -29,4 +29,4 @@ Give your AI a process analyst role rather than a helpful assistant role. Paste 
 
 ## checkpoint
 
-Can your pod explain in one sentence where you think the delay is hiding and why? If not, refine your hypotheses.
+If someone outside your group asked "where do you think the 7 days went?" could you answer in one sentence right now? "Somewhere in the warehouse" is not specific enough. A named stage and a reason is.

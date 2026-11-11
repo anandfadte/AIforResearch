@@ -7,7 +7,7 @@ Source Auditing | Evaluating data completeness, timestamp reliability, and poten
 
 ## context
 
-Download and open your data files. Before analysing anything, profile each source: what time period does it cover, what stages of the process does it represent, and are there gaps or suspicious patterns?
+Before you search for a bottleneck, check whether your data even covers the full chain. Operational logs often have gaps: missing timestamps, excluded warehouses, or non-working days that look like delays. A blank field can mislead you as much as an outlier.
 
 ## files
 
