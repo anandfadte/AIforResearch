@@ -918,8 +918,10 @@ function resetTimer() {
 /* ─── Step 1 ─── */
 function chooseDecision(choice) {
   if (decision === choice) return;
+  /* Undo any points already scored so toggling choices never double-counts */
+  score -= step1Pts + step2Pts + (confidence !== null ? 20 : 0);
+  step1Pts = 0; step2Pts = 0; confidence = null; actionChoice = null;
   decision = choice;
-  actionChoice = null; confidence = null;
   lockAllRemainingClues();
 
   var keepBtn = document.getElementById('btn-keep');
@@ -977,6 +979,8 @@ function chooseDecision(choice) {
 }
 
 function reconsider() {
+  score -= step1Pts + step2Pts + (confidence !== null ? 20 : 0);
+  step1Pts = 0; step2Pts = 0; confidence = null;
   decision = null;
   /* Re-enable any locked (not yet unlocked) clue cards */
   [1,2,3].forEach(function(n) {
