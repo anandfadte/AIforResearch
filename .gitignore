@@ -36,6 +36,12 @@ yarn-error.log*
 # generated ZIPs (rebuilt on every build)
 /public/downloads/
 
+# old renamed activity folder (locked by Office, pending deletion)
+/activities/activity_03_client_health/
+
+# Office temp files
+~$*
+
 # vercel
 .vercel
 
