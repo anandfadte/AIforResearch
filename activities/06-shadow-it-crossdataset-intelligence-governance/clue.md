@@ -1,1 +1,0 @@
-The AI is being asked to cross-reference four datasets no human can hold in working memory at once. Think about what structure the output needs — not just a list, but a joined view that shows WHERE a procurement line meets a network connection meets a policy clause.

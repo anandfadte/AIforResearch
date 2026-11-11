@@ -1,1 +1,0 @@
-Five roles at a table — one per AI tool. The prompt orchestrates all five. Think about what each tool is being asked to do that NO OTHER tool should do. What's the one job that's exclusively Mistral's? What's the one job the Synthesizer owns? The role-exclusivity is where this pattern lives or dies.

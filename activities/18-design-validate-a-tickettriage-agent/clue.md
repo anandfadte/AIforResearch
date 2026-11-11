@@ -1,1 +1,0 @@
-You're not writing a prompt for a one-off task. You're writing a SPEC for an agent that will run thousands of times. Think about the tool-call order, the hard rules, the forbidden behaviours. The spec IS the deliverable; the agent is just the artifact of a well-written spec.

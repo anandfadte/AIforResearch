@@ -1,1 +1,0 @@
-A chart tells one story; the raw data tells another. Think about what the prompt needs to make the AI reconcile the two independently — ChatGPT does the math, Gemini reads the chart image, Claude does the causal reasoning. The handoff between tools is where the output integrity lives.

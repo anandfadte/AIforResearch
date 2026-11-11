@@ -1,1 +1,0 @@
-This is three analysts given the SAME prompt. The same evidence. Running in parallel. Think about what the prompt needs to make three independent models produce three defensible hypothesis registers — not three slightly different variations of the same thing.

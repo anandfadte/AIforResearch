@@ -1,1 +1,0 @@
-Two SOPs that cover the same workflow. Think about what the prompt needs to tell the AI to find contradictions, not similarities. And then — critically — what the AI should do when it finds one. Flag? Rank? Recommend the stricter policy? Your prompt decides.

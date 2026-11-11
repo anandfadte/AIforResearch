@@ -2,77 +2,53 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Clock, Layers, RotateCcw, Star, Users } from "lucide-react";
+import { Clock, Layers, RotateCcw } from "lucide-react";
 
 interface ActivityCard {
   id: string;
   slug: string;
-  name: string;
-  pattern: string;
+  title: string;
+  subtitle: string;
+  domain: string;
   duration_minutes: number;
-  tools: string[];
-  multimodal: boolean;
+  difficulty: string;
   sort_order: number;
-  priority?: boolean;
-  group?: string;
-  group_color?: string;
+  deliverable: string;
 }
 
 export function ActivityGrid({
   activities,
-  patterns,
-  tools,
+  domains,
 }: {
   activities: ActivityCard[];
-  patterns: string[];
-  tools: string[];
+  domains: string[];
 }) {
-  const [patternFilter, setPatternFilter] = useState("");
-  const [toolFilter, setToolFilter] = useState("");
+  const [domainFilter, setDomainFilter] = useState("");
 
   const filtered = activities.filter((a) => {
-    if (patternFilter && a.pattern !== patternFilter) return false;
-    if (toolFilter && !a.tools.includes(toolFilter)) return false;
+    if (domainFilter && a.domain !== domainFilter) return false;
     return true;
   });
-
-  const hasFilters = patternFilter || toolFilter;
 
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center gap-3">
         <select
-          value={patternFilter}
-          onChange={(e) => setPatternFilter(e.target.value)}
+          value={domainFilter}
+          onChange={(e) => setDomainFilter(e.target.value)}
           className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
         >
-          <option value="">All patterns</option>
-          {patterns.map((p) => (
-            <option key={p} value={p}>
-              {p}
+          <option value="">All domains</option>
+          {domains.map((d) => (
+            <option key={d} value={d}>
+              {d}
             </option>
           ))}
         </select>
 
-        <select
-          value={toolFilter}
-          onChange={(e) => setToolFilter(e.target.value)}
-          className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
-        >
-          <option value="">All tools</option>
-          {tools.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-
-        {hasFilters && (
+        {domainFilter && (
           <button
-            onClick={() => {
-              setPatternFilter("");
-              setToolFilter("");
-            }}
+            onClick={() => setDomainFilter("")}
             className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm text-text-muted hover:text-text-primary transition-colors"
           >
             <RotateCcw size={14} />
@@ -85,66 +61,31 @@ export function ActivityGrid({
         </span>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((a) => (
           <Link
             key={a.slug}
             href={`/activities/${a.slug}`}
-            className={`group relative rounded-xl border bg-surface p-5 transition-all hover:shadow-md ${
-              a.priority
-                ? "border-2 hover:shadow-lg"
-                : "border-border hover:border-accent/50"
-            }`}
-            style={
-              a.priority && a.group_color
-                ? { borderColor: a.group_color + "66" }
-                : undefined
-            }
+            className="group relative rounded-xl border border-border bg-surface p-5 transition-all hover:shadow-md hover:border-accent/50"
           >
-            <div className="mb-3 flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <span
-                  className="text-3xl font-bold"
-                  style={
-                    a.priority && a.group_color
-                      ? { color: a.group_color + "99" }
-                      : undefined
-                  }
-                >
-                  {!a.priority && (
-                    <span className="text-accent/80">
-                      {String(a.sort_order).padStart(2, "0")}
-                    </span>
-                  )}
-                  {a.priority && String(a.sort_order).padStart(2, "0")}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {a.priority && a.group && (
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-                    style={{ backgroundColor: a.group_color }}
-                  >
-                    <Users size={10} />
-                    {a.group}
-                  </span>
-                )}
-                {a.multimodal && (
-                  <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
-                    Multimodal
-                  </span>
-                )}
-              </div>
+            <div className="mb-3">
+              <span className="text-3xl font-bold text-accent/80">
+                {String(a.sort_order).padStart(2, "0")}
+              </span>
             </div>
 
-            <h3 className="mb-3 text-base font-semibold leading-snug text-text-primary group-hover:text-accent transition-colors">
-              {a.name}
+            <h3 className="mb-2 text-base font-semibold leading-snug text-text-primary group-hover:text-accent transition-colors">
+              {a.title}
             </h3>
+
+            <p className="mb-4 text-sm text-text-muted line-clamp-2">
+              {a.subtitle}
+            </p>
 
             <div className="mb-3 flex items-center gap-3 text-xs text-text-muted">
               <span className="inline-flex items-center gap-1 rounded-md bg-surface-alt px-2 py-1 font-medium">
                 <Layers size={12} />
-                {a.pattern}
+                {a.domain}
               </span>
               <span className="inline-flex items-center gap-1">
                 <Clock size={12} />
@@ -152,15 +93,8 @@ export function ActivityGrid({
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-1.5">
-              {a.tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="rounded-md bg-surface-alt px-2 py-0.5 text-[11px] font-medium text-text-muted"
-                >
-                  {tool}
-                </span>
-              ))}
+            <div className="text-xs text-text-muted">
+              <span className="font-medium">Deliverable:</span> {a.deliverable}
             </div>
           </Link>
         ))}

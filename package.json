@@ -1,5 +1,5 @@
 {
-  "name": "ai-studio-problem-management",
+  "name": "ai-studio-research-analysis",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1"
   },
   "devDependencies": {

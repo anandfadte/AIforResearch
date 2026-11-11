@@ -1,1 +1,0 @@
-You're asking the AI to assess whether a solved problem can become a sellable product. Think about what evidence structure makes this defensible to a CFO. Not optimism. Not a pitch. A risk-adjusted viability case with the honest 'what we don't know yet' section.

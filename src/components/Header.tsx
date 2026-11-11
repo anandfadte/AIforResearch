@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sun, Moon, Zap } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 export function Header() {
@@ -29,29 +29,16 @@ export function Header() {
         </Link>
         <nav className="flex items-center gap-4 sm:gap-6">
           {!isHome && (
-            <>
-              <Link
-                href="/warmup"
-                className={`flex items-center gap-1.5 text-sm transition-colors ${
-                  pathname === "/warmup"
-                    ? "font-medium text-accent"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                <Zap size={14} />
-                Warm-up
-              </Link>
-              <Link
-                href="/activities"
-                className={`text-sm transition-colors ${
-                  pathname.startsWith("/activities")
-                    ? "font-medium text-accent"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                Activities
-              </Link>
-            </>
+            <Link
+              href="/activities"
+              className={`text-sm transition-colors ${
+                pathname.startsWith("/activities")
+                  ? "font-medium text-accent"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              Activities
+            </Link>
           )}
           {name && !isHome && (
             <span className="hidden sm:block text-xs text-text-muted border-l border-border pl-4">

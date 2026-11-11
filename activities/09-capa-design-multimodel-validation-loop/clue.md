@@ -1,1 +1,0 @@
-A loop, not a council. Model 1 drafts a CAPA. Model 2 critiques it. Model 1 revises. Model 3 validates. Think about what each role's INSTRUCTION needs to be different enough that the loop produces real revision — not three models agreeing on the same first draft.

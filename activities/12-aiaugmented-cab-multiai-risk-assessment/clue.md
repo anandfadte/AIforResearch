@@ -1,1 +1,0 @@
-A Change Advisory Board with AI analysts assessing risk. Think about what counts as a 'risk' the AI should flag vs a 'risk' a human should decide. The prompt draws that line. And then: what should the AI do when the risk is below the flag threshold but above the ignore threshold?

@@ -15,9 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Applied AI Studio — Problem Management",
+  title: "Applied AI Studio — Research & Analysis",
   description:
-    "Four AI orchestration patterns. Nineteen activities. Pattern discipline over tool choice.",
+    "AI-powered research and analysis. Five self-paced activities with 6-phase progressive unlock.",
 };
 
 export default function RootLayout({

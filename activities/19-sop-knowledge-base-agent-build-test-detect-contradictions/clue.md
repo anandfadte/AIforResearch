@@ -1,1 +1,0 @@
-An AI agent that answers from your SOPs with citations. Think about what the agent should do when NO SOP covers the question. Refuse? Guess? Cite the closest match? The quality of the KB agent is set by this one rule — and your prompt is where it goes.

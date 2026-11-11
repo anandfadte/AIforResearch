@@ -1,1 +1,0 @@
-Two models with the same inputs should produce DIFFERENT answers. Think about what weighting discipline you'd give each model. Which dimension gets 2x weight — and why does the business context justify it? Can you make Model B's weighting argue against Model A's instinct?

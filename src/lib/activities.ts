@@ -1,57 +1,77 @@
 import fs from "fs";
 import path from "path";
 import { remark } from "remark";
+import remarkGfm from "remark-gfm";
 import html from "remark-html";
 
 const ACTIVITIES_DIR = path.join(process.cwd(), "activities");
 
-export interface ActivityMeta {
+export interface DataFile {
+  filename: string;
+  display_name: string;
+  type: string;
+  role: "primary_data" | "supporting_source" | "distractor";
+}
+
+export interface ActivityConfig {
   id: string;
   slug: string;
-  name: string;
-  domain: string;
-  pattern: string;
-  duration_minutes: number;
-  tools: string[];
-  complexity: string;
-  multimodal: boolean;
-  sort_order: number;
-  practice_only: boolean;
-  priority?: boolean;
-  group?: string;
-  group_color?: string;
-  consensus?: boolean;
-}
-
-export interface Step {
-  step: number;
   title: string;
-  tool?: string;
-  tool_config?: string;
-  role?: string;
-  inputs?: string[];
-  instruction: string;
-  partial_prompt?: string;
-  full_prompt?: string;
+  subtitle: string;
+  domain: string;
+  duration_minutes: number;
+  ai_tool: string;
+  difficulty: string;
+  phases: number;
+  data_files: DataFile[];
+  learning_objectives: string[];
+  deliverable: string;
 }
 
-export interface StepsFile {
-  overview?: string;
-  steps: Step[];
+export interface PhaseContent {
+  scenario?: string;
+  context?: string;
+  files?: string[];
+  doThis?: string;
+  promptingGuideline?: string;
+  promptingGuideline2?: string;
+  humanDecision?: string;
+  checkpoint?: string;
+  revealDistractors?: string;
+  revealQuirks?: string;
+  revealInsightPath?: string;
+  revealTakeaway?: string;
+  tip?: string;
+  researchMode?: string;
+  marginBridge?: string;
+  sourceLens?: string;
+}
+
+export interface PhaseInfo {
+  number: number;
+  key: string;
+  title: string;
+  subtitle: string;
+  content: PhaseContent;
 }
 
 export interface Activity {
-  meta: ActivityMeta;
-  briefHtml: string;
-  clueHtml: string;
-  stepsData: StepsFile | null;
-  whatGoodLooksLikeHtml: string;
-  rationaleHtml: string;
-  contentComplete: boolean;
+  config: ActivityConfig;
+  folderName: string;
+  phases: PhaseInfo[];
 }
 
-async function markdownToHtml(md: string): Promise<string> {
-  const result = await remark().use(html, { sanitize: false }).process(md);
+const PHASE_FILES = [
+  { key: "brief", file: "brief.md", number: 1, defaultTitle: "The Brief" },
+  { key: "source_triage", file: "source_triage.md", number: 2, defaultTitle: "Source Triage" },
+  { key: "deep_research", file: "deep_research.md", number: 3, defaultTitle: "Deep Research" },
+  { key: "insight_framing", file: "insight_framing.md", number: 4, defaultTitle: "Insight Framing" },
+  { key: "deliverable", file: "deliverable.md", number: 5, defaultTitle: "The Deliverable" },
+  { key: "debrief", file: "debrief.md", number: 6, defaultTitle: "Debrief" },
+];
+
+async function mdToHtml(md: string): Promise<string> {
+  const result = await remark().use(remarkGfm).use(html, { sanitize: false }).process(md);
   return result.toString();
 }
 
@@ -63,68 +83,132 @@ function readFileIfExists(filePath: string): string | null {
   }
 }
 
-async function loadActivity(slug: string): Promise<Activity> {
-  const dir = path.join(ACTIVITIES_DIR, slug);
+function parsePhaseMd(raw: string): { title: string; subtitle: string; sections: Record<string, string> } {
+  const lines = raw.split("\n");
+  let title = "";
+  let subtitle = "";
+  const sections: Record<string, string> = {};
+  let currentSection = "";
+  let currentLines: string[] = [];
 
-  const metaRaw = readFileIfExists(path.join(dir, "meta.json"));
-  if (!metaRaw) {
-    throw new Error(`Missing meta.json for ${slug}`);
+  for (const line of lines) {
+    if (line.startsWith("# ") && !title) {
+      title = line.replace("# ", "").trim();
+      continue;
+    }
+    if (line.startsWith("> ") && !subtitle && !currentSection) {
+      subtitle = line.replace("> ", "").trim();
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      if (currentSection) {
+        sections[currentSection] = currentLines.join("\n").trim();
+      }
+      currentSection = line.replace("## ", "").trim();
+      currentLines = [];
+      continue;
+    }
+    if (currentSection) {
+      currentLines.push(line);
+    }
   }
-  const meta: ActivityMeta = JSON.parse(metaRaw);
+  if (currentSection) {
+    sections[currentSection] = currentLines.join("\n").trim();
+  }
 
-  const briefMd = readFileIfExists(path.join(dir, "brief.md"));
-  const clueMd = readFileIfExists(path.join(dir, "clue.md"));
-  const wglMd = readFileIfExists(path.join(dir, "what-good-looks-like.md"));
-  const rationaleMd = readFileIfExists(path.join(dir, "rationale.md"));
-  const stepsRaw = readFileIfExists(path.join(dir, "steps.json"));
+  return { title, subtitle, sections };
+}
 
-  const stepsData: StepsFile | null = stepsRaw ? JSON.parse(stepsRaw) : null;
+function parseFilesList(raw: string): string[] {
+  return raw
+    .split("\n")
+    .map((l) => l.replace(/^-\s*/, "").trim())
+    .filter(Boolean);
+}
 
-  const contentComplete = !!briefMd;
+async function convertSections(sections: Record<string, string>): Promise<PhaseContent> {
+  const content: PhaseContent = {};
 
-  const briefHtml = briefMd ? await markdownToHtml(briefMd) : "";
-  const clueHtml = clueMd ? await markdownToHtml(clueMd) : "";
-  const whatGoodLooksLikeHtml = wglMd ? await markdownToHtml(wglMd) : "";
-  const rationaleHtml = rationaleMd ? await markdownToHtml(rationaleMd) : "";
+  if (sections.scenario) content.scenario = await mdToHtml(sections.scenario);
+  if (sections.context) content.context = await mdToHtml(sections.context);
+  if (sections.files) content.files = parseFilesList(sections.files);
+  if (sections.do_this) content.doThis = await mdToHtml(sections.do_this);
+  if (sections.prompting_guideline) content.promptingGuideline = await mdToHtml(sections.prompting_guideline);
+  if (sections.prompting_guideline_2) content.promptingGuideline2 = await mdToHtml(sections.prompting_guideline_2);
+  if (sections.human_decision) content.humanDecision = await mdToHtml(sections.human_decision);
+  if (sections.checkpoint) content.checkpoint = await mdToHtml(sections.checkpoint);
+  if (sections.reveal_distractors) content.revealDistractors = await mdToHtml(sections.reveal_distractors);
+  if (sections.reveal_quirks) content.revealQuirks = await mdToHtml(sections.reveal_quirks);
+  if (sections.reveal_insight_path) content.revealInsightPath = await mdToHtml(sections.reveal_insight_path);
+  if (sections.reveal_takeaway) content.revealTakeaway = await mdToHtml(sections.reveal_takeaway);
+  if (sections.tip) content.tip = await mdToHtml(sections.tip);
+  if (sections.research_mode) content.researchMode = sections.research_mode;
+  if (sections.margin_bridge) content.marginBridge = await mdToHtml(sections.margin_bridge);
+  if (sections.source_lens) content.sourceLens = sections.source_lens;
 
-  return {
-    meta,
-    briefHtml,
-    clueHtml,
-    stepsData,
-    whatGoodLooksLikeHtml,
-    rationaleHtml,
-    contentComplete,
-  };
+  return content;
+}
+
+async function loadActivity(folderName: string): Promise<Activity> {
+  const dir = path.join(ACTIVITIES_DIR, folderName);
+
+  const configRaw = readFileIfExists(path.join(dir, "config.json"));
+  if (!configRaw) throw new Error(`Missing config.json for ${folderName}`);
+  const config: ActivityConfig = JSON.parse(configRaw);
+
+  const phases: PhaseInfo[] = [];
+
+  for (const pf of PHASE_FILES) {
+    const raw = readFileIfExists(path.join(dir, pf.file));
+    if (!raw) {
+      phases.push({
+        number: pf.number,
+        key: pf.key,
+        title: pf.defaultTitle,
+        subtitle: "",
+        content: {},
+      });
+      continue;
+    }
+
+    const { title, subtitle, sections } = parsePhaseMd(raw);
+    const content = await convertSections(sections);
+
+    phases.push({
+      number: pf.number,
+      key: pf.key,
+      title: title || pf.defaultTitle,
+      subtitle,
+      content,
+    });
+  }
+
+  return { config, folderName, phases };
 }
 
 export async function getActivities(): Promise<Activity[]> {
-  const slugs = fs
+  const folders = fs
     .readdirSync(ACTIVITIES_DIR)
-    .filter((entry) =>
-      fs.statSync(path.join(ACTIVITIES_DIR, entry)).isDirectory()
-    );
+    .filter((entry) => {
+      const full = path.join(ACTIVITIES_DIR, entry);
+      return fs.statSync(full).isDirectory() && entry.startsWith("activity_");
+    });
 
-  const activities = await Promise.all(slugs.map(loadActivity));
-  return activities.sort((a, b) => a.meta.sort_order - b.meta.sort_order);
+  const activities = await Promise.all(folders.map(loadActivity));
+  return activities.sort((a, b) => {
+    const numA = parseInt(a.config.id.replace("activity_", ""), 10);
+    const numB = parseInt(b.config.id.replace("activity_", ""), 10);
+    return numA - numB;
+  });
 }
 
-export async function getActivityBySlug(
-  slug: string
-): Promise<Activity | null> {
-  const dir = path.join(ACTIVITIES_DIR, slug);
-  if (!fs.existsSync(dir)) return null;
-  return loadActivity(slug);
-}
-
-export async function getPatterns(): Promise<string[]> {
+export async function getActivityBySlug(slug: string): Promise<Activity | null> {
   const activities = await getActivities();
-  const patterns = new Set(activities.map((a) => a.meta.pattern));
-  return Array.from(patterns).sort();
+  return activities.find((a) => a.config.slug === slug) ?? null;
 }
 
-export async function getTools(): Promise<string[]> {
+export async function getDomains(): Promise<string[]> {
   const activities = await getActivities();
-  const tools = new Set(activities.flatMap((a) => a.meta.tools));
-  return Array.from(tools).sort();
+  const domains = new Set(activities.map((a) => a.config.domain));
+  return Array.from(domains).sort();
 }

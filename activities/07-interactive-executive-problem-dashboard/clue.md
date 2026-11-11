@@ -1,1 +1,0 @@
-Single-tool depth. One model, multiple conversational turns. Think about the FIRST turn vs the FOURTH turn. The first should get the AI to produce a dashboard shape. The fourth should get it to defend one specific choice against a stakeholder challenge. The depth is in the turns, not in one perfect prompt.

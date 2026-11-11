@@ -1,1 +1,0 @@
-Three variants of the same brief, each landing differently. Think about what distinguishes a brief for the CFO from a brief for the CRO from a brief for the Board. The underlying facts are the same; the narrative pyramid is different. Your prompt structures three pyramids, not one brief.

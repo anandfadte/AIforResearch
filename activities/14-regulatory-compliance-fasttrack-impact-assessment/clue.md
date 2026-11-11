@@ -1,1 +1,0 @@
-A regulatory impact assessment under time pressure. Think about what the prompt needs to make the AI distinguish REQUIRED compliance actions from NICE-TO-HAVE. In regulated work, that line matters more than the completeness of the list.

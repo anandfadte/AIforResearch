@@ -1,1 +1,0 @@
-Three perspectives on the same incident. Operations. Risk. Business. Think about how you encode a 'perspective' into a prompt without the AI collapsing them into generic analysis. What's the one thing each perspective would say that the other two would miss?

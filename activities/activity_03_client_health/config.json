@@ -1,0 +1,44 @@
+{
+  "id": "activity_03",
+  "slug": "client-health",
+  "title": "The Client Health Check",
+  "subtitle": "Is this account really in crisis — or is something else going on?",
+  "domain": "Client Management",
+  "duration_minutes": 30,
+  "ai_tool": "Claude, Copilot, ChatGPT, etc.",
+  "difficulty": "Medium",
+  "phases": 6,
+  "data_files": [
+    {
+      "filename": "Client_Satisfaction_Tracker.xlsx",
+      "display_name": "Client Satisfaction Tracker",
+      "type": "excel",
+      "role": "primary_data"
+    },
+    {
+      "filename": "Support_Ticket_Summary.docx",
+      "display_name": "Support Ticket Summary",
+      "type": "docx",
+      "role": "supporting_source"
+    },
+    {
+      "filename": "Relationship_Manager_Email.docx",
+      "display_name": "Relationship Manager Email",
+      "type": "docx",
+      "role": "distractor"
+    },
+    {
+      "filename": "Industry_Benchmark_NPS.docx",
+      "display_name": "Industry NPS Benchmark",
+      "type": "docx",
+      "role": "distractor"
+    }
+  ],
+  "learning_objectives": [
+    "Use AI to analyze client satisfaction data across service lines",
+    "Detect statistical unreliability in survey data (low response rates)",
+    "Recognize stakeholder-driven score changes vs real service issues",
+    "Separate signal from noise in escalation and CSAT metrics"
+  ],
+  "deliverable": "Client health assessment with recommended action plan"
+}
