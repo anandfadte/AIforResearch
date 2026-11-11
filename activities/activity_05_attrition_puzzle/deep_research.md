@@ -1,9 +1,13 @@
 # Deep Research
 
-> Profile the data, test your hypotheses, and find the signal the exit surveys are hiding. (~10 minutes)
+> Profile the data, test your hypotheses, and find the signal the exit surveys are hiding. (~8 minutes)
 
 ## research_mode
 Analytical Deep-Dive | Joining workforce and compensation data to find where attrition is actually concentrated, and testing whether the narrative in the qualitative sources holds up
+
+## context
+
+Your pod now has its triaged sources and two priority research questions. Use your AI tool to interrogate the data systematically: profile it first, then test your hypotheses against hard numbers.
 
 ## do_this
 

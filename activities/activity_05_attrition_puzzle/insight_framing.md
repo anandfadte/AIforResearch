@@ -5,6 +5,10 @@
 ## research_mode
 Evidence Synthesis | Compressing quantitative findings into decision-ready insight statements that name the problem, size it, and point toward action
 
+## context
+
+Your pod has profiled the data, tested hypotheses, and triangulated across sources. Now distil the findings into three sharp insights the CHRO can act on.
+
 ## do_this
 
 1. Turn each finding into one sentence: what you found, why it matters, and what should happen next. Aim for three to five.

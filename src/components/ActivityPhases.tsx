@@ -374,7 +374,7 @@ export function ActivityPhases({ slug, phases, dataFiles, basePath, folderName, 
                       className="inline-flex items-center gap-2 rounded-lg border-2 border-accent/50 px-5 py-3 text-sm font-semibold text-accent hover:bg-accent/5 transition-colors"
                     >
                       <Eye size={16} />
-                      {revealOpen ? "Hide the design" : "Reveal the design — only after your deliverable is done"}
+                      {revealOpen ? "Hide the design" : "Reveal the design: only after your deliverable is done"}
                       {revealOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                     </button>
 
@@ -444,7 +444,7 @@ export function ActivityPhases({ slug, phases, dataFiles, basePath, folderName, 
                         onClick={() => unlockNext(idx)}
                         className="rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-accent/90 transition-colors"
                       >
-                        Our pod has done this — unlock phase {phase.number + 1}
+                        Our pod has done this: unlock phase {phase.number + 1}
                       </button>
                     )}
                   </div>

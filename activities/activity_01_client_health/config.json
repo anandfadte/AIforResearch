@@ -4,7 +4,7 @@
   "title": "The Client Health Check",
   "subtitle": "Is this account really in crisis, or is something else going on?",
   "domain": "Client Management",
-  "duration_minutes": 30,
+  "duration_minutes": 35,
   "ai_tool": "Claude, Copilot, ChatGPT, etc.",
   "difficulty": "Medium",
   "phases": 5,
