@@ -881,10 +881,10 @@ var ACTION_FEEDBACK = {
   C: "Useful as a cross-check, but not as your first move. The vendor has every incentive to keep those licenses active. Go to HR first, then use the vendor report to validate."
 };
 var TIERS = [
-  { min: 95, label: "Full marks",  desc: "No clues needed. You read the data, trusted your read, and acted on it cleanly." },
-  { min: 80, label: "Sharp eye",   desc: "Right call, right action. You used evidence wisely and kept your score high." },
-  { min: 65, label: "Strong call", desc: "Right direction. The clues helped — just trust your read a step earlier next time." },
-  { min: 0,  label: "Right track", desc: "Good instinct on the core call. The follow-through needed one more check." }
+  { min: 100, label: "Perfect score",  desc: "No clues used. You read the data, trusted your judgment, and acted cleanly." },
+  { min: 85,  label: "Sharp eye",      desc: "Right call, right action. You used minimal evidence and kept your score high." },
+  { min: 65,  label: "Strong call",    desc: "Right direction. The clues helped — just trust your read a step earlier next time." },
+  { min: 0,   label: "Right track",    desc: "Good instinct on the core call. The follow-through needed one more check." }
 ];
 
 function getFinalScore() { return Math.max(0, score - cluesUsed * 5); }
@@ -1273,10 +1273,14 @@ function showScorecard() {
     document.getElementById('br-total').classList.add('hidden');
   }
   var takeaway;
-  if (finalScore >= 95)      takeaway = '<strong>Perfect sequence, no clues needed.</strong> You identified the gap in the AI’s data, acted on the human finding, and chose the most defensible path forward.';
-  else if (finalScore >= 80) takeaway = '<strong>Right call, right action.</strong> You verified before you acted and kept your score high. The clue cost was worth it — better to confirm than guess at $2,000/month.';
-  else if (finalScore >= 65) takeaway = '<strong>Right direction.</strong> You correctly overruled the AI. Next time, trust your read a step earlier — fewer clues, same conclusion.';
-  else                        takeaway = '<strong>Right instinct on the core call.</strong> The follow-through needed one more check — verify with HR before any cancellation.';
+  if (cluesUsed === 0 && decision === ‘overrule’)
+    takeaway = ‘<strong>Perfect sequence, no clues needed.</strong> You identified the gap in the AI\’s data, acted on the human finding, and chose the most defensible path forward. That is the human-in-the-loop working exactly as it should.’;
+  else if (finalScore >= 85)
+    takeaway = ‘<strong>Right call, right action.</strong> You correctly overruled the AI and chose the best follow-up. Using ‘ + cluesUsed + (cluesUsed === 1 ? ‘ clue’ : ‘ clues’) + ‘ was a reasonable call — the goal next time is to reach the same conclusion with less scaffolding.’;
+  else if (finalScore >= 65)
+    takeaway = ‘<strong>Right direction.</strong> You correctly overruled the AI. Next time, trust your read a step earlier — fewer clues, same conclusion.’;
+  else
+    takeaway = ‘<strong>Right instinct on the core call.</strong> The follow-through needed one more check — verify with HR before any cancellation.’;
   document.getElementById('scorecard-takeaway-text').innerHTML = takeaway;
   /* Cost Reveal */
   var humanMins = 15 + cluesUsed * 10;
